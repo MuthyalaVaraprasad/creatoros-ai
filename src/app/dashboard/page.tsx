@@ -14,6 +14,7 @@ import {
   Settings,
   Search,
   Bell,
+  Lock,
   Sun,
   Moon,
   ChevronDown,
@@ -71,6 +72,60 @@ export default function Dashboard() {
   const [onboardingStep, setOnboardingStep] = useState(1);
   const [creatorNicheInput, setCreatorNicheInput] = useState("Tech & SaaS");
   const [targetPlatforms, setTargetPlatforms] = useState<string[]>([]);
+
+  // Settings Dashboard States
+  const [settingsSection, setSettingsSection] = useState("profile");
+  const [profileName, setProfileName] = useState("Varaprasad Muthyala");
+  const [profileUsername, setProfileUsername] = useState("varaprasad_m");
+  const [profileBio, setProfileBio] = useState("AI content creator & developer building next-gen SaaS platforms.");
+  const [profileWebsite, setProfileWebsite] = useState("https://github.com/MuthyalaVaraprasad");
+  const [profileAvatar, setProfileAvatar] = useState("");
+  const [accountEmail, setAccountEmail] = useState("varaprasad@viralflow.ai");
+  const [accountPassword, setAccountPassword] = useState("••••••••");
+  const [enableTwoFactor, setEnableTwoFactor] = useState(false);
+  const [showTwoFactorModal, setShowTwoFactorModal] = useState(false);
+  const [accentColor, setAccentColor] = useState("purple");
+  const [fontSize, setFontSize] = useState("medium");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [animationsEnabled, setAnimationsEnabled] = useState(true);
+  const [notiAiUpdates, setNotiAiUpdates] = useState(true);
+  const [notiMarketing, setNotiMarketing] = useState(false);
+  const [notiSecurity, setNotiSecurity] = useState(true);
+  const [notiPushWorkflows, setNotiPushWorkflows] = useState(true);
+  const [notiPushTrends, setNotiPushTrends] = useState(true);
+  const [prefTone, setPrefTone] = useState("Witty & Engaging");
+  const [prefLang, setPrefLang] = useState("English");
+  const [prefCreativity, setPrefCreativity] = useState(0.7);
+  const [prefLength, setPrefLength] = useState("Medium");
+  const [socialsConnected, setSocialsConnected] = useState<Record<string, boolean>>({
+    youtube: true,
+    instagram: false,
+    tiktok: true,
+    twitter: false,
+    linkedin: true
+  });
+  const [apiKeys, setApiKeys] = useState<{ id: string; key: string; name: string; date: string }[]>([
+    { id: "key_1", key: "vf_live_839f28c11aa...", name: "Production Key", date: "2026-05-20" }
+  ]);
+  const [newKeyName, setNewKeyName] = useState("");
+  const [workspaceName, setWorkspaceName] = useState("Muthyala's Hub");
+  const [teamMembers, setTeamMembers] = useState<{ email: string; role: string }[]>([
+    { email: "varaprasad@viralflow.ai", role: "Owner" },
+    { email: "collab_creator@example.com", role: "Editor" }
+  ]);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("Editor");
+  const [webhookUrl, setWebhookUrl] = useState("https://api.viralflow.ai/webhooks/receiver");
+  const [shortcuts, setShortcuts] = useState({
+    generate: "Ctrl + G",
+    openDashboard: "Ctrl + D",
+    save: "Ctrl + S",
+    copilot: "Ctrl + K"
+  });
+  const [regionLanguage, setRegionLanguage] = useState("en-US");
+  const [regionTimezone, setRegionTimezone] = useState("UTC+5:30 (Kolkata)");
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+  const [showDeleteWorkspaceModal, setShowDeleteWorkspaceModal] = useState(false);
 
   useEffect(() => {
     // Check if user session needs onboarding
@@ -2004,15 +2059,1124 @@ export default function Dashboard() {
           {/* TAB: SETTINGS & API CONFIGS */}
           {/* ========================================== */}
           {activeTab === "Settings" && (
-            <div className="p-6 max-w-3xl mx-auto space-y-6">
+            <div className="p-4 lg:p-8 max-w-6xl mx-auto space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Settings Console</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">Control API key environments and notifications.</p>
+                  <h2 className="text-2xl font-black tracking-tight text-white">Settings Console</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Manage your workspace configuration, security, billing, and integrations.</p>
                 </div>
-                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                <button onClick={() => setActiveTab("Dashboard")} className="px-3.5 py-1.5 bg-white/5 border border-white/5 hover:bg-white/10 text-xs font-semibold rounded-xl text-white transition-colors">
                   Back to Dashboard
                 </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+                {/* Left Inner Sidebar Navigation */}
+                <div className="glass-card p-4 border-white/5 bg-white/[0.01] space-y-1 lg:col-span-1 overflow-y-auto max-h-[70vh] custom-scrollbar">
+                  <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest block px-2.5 mb-2">Preferences</span>
+                  {[
+                    { id: "profile", label: "Profile", icon: User },
+                    { id: "account", label: "Account", icon: Lock },
+                    { id: "appearance", label: "Appearance", icon: Sun },
+                    { id: "notifications", label: "Notifications", icon: Bell },
+                    { id: "ai", label: "AI Preferences", icon: Sparkles },
+                    { id: "integrations", label: "Integrations", icon: Share2 },
+                    { id: "security", label: "Security", icon: Shield },
+                    { id: "billing", label: "Billing", icon: CreditCard },
+                    { id: "workspace", label: "Workspace", icon: FolderOpen },
+                    { id: "team", label: "Team", icon: Users },
+                    { id: "api", label: "API Keys", icon: Zap },
+                    { id: "language", label: "Language & Region", icon: Sliders },
+                    { id: "export", label: "Export & Backup", icon: Download },
+                    { id: "privacy", label: "Privacy", icon: Eye },
+                    { id: "connected-apps", label: "Connected Apps", icon: Layers },
+                    { id: "shortcuts", label: "Shortcuts", icon: Sliders },
+                    { id: "accessibility", label: "Accessibility", icon: Sparkles },
+                    { id: "advanced", label: "Advanced", icon: Sliders },
+                    { id: "data", label: "Data Management", icon: Sliders },
+                    { id: "danger", label: "Danger Zone", icon: Sliders }
+                  ].map((sec) => {
+                    const Icon = sec.icon;
+                    const isActive = settingsSection === sec.id;
+                    return (
+                      <button
+                        key={sec.id}
+                        onClick={() => setSettingsSection(sec.id)}
+                        className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
+                          isActive 
+                            ? "bg-purple-600/20 border border-purple-500/20 text-purple-300 shadow-lg shadow-purple-500/5" 
+                            : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
+                        }`}
+                      >
+                        <Icon className={`h-3.5 w-3.5 ${isActive ? "text-purple-400" : "text-gray-500"}`} />
+                        <span>{sec.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Right Settings Detail Panels */}
+                <div className="lg:col-span-3 space-y-6">
+                  {/* PROFILE SETTINGS */}
+                  {settingsSection === "profile" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Profile Settings</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Control how your creator profile looks to visitors and platforms.</p>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row items-center gap-4">
+                        <div className="h-16 w-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-xl font-bold text-white shadow-lg shadow-purple-500/10">
+                          {profileName.charAt(0) || "C"}
+                        </div>
+                        <div className="flex gap-2">
+                          <button onClick={() => showToast("Profile photo upload trigger activated")} className="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-xs font-semibold rounded-xl text-white transition-colors">
+                            Upload New Photo
+                          </button>
+                          <button onClick={() => showToast("Avatar removed")} className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-xl text-gray-300 transition-colors">
+                            Remove Photo
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label className="text-[11px] font-semibold text-gray-400">Display Name</label>
+                          <input
+                            type="text"
+                            value={profileName}
+                            onChange={(e) => setProfileName(e.target.value)}
+                            className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500/50"
+                          />
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[11px] font-semibold text-gray-400">Username</label>
+                          <input
+                            type="text"
+                            value={profileUsername}
+                            onChange={(e) => setProfileUsername(e.target.value)}
+                            className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500/50"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-semibold text-gray-400">Creator Bio</label>
+                        <textarea
+                          rows={3}
+                          value={profileBio}
+                          onChange={(e) => setProfileBio(e.target.value)}
+                          className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-semibold text-gray-400">Portfolio / Website Link</label>
+                        <input
+                          type="url"
+                          value={profileWebsite}
+                          onChange={(e) => setProfileWebsite(e.target.value)}
+                          className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500/50"
+                        />
+                      </div>
+
+                      <div className="flex gap-2 justify-end border-t border-white/5 pt-4">
+                        <button onClick={() => showToast("Profile settings saved successfully!")} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-xs font-bold rounded-xl text-white shadow-lg shadow-purple-600/20">
+                          Save Profile Changes
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ACCOUNT SETTINGS */}
+                  {settingsSection === "account" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Account Configuration</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Control email addresses, passwords, sessions, and multi-device lockouts.</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label className="text-[11px] font-semibold text-gray-400">Primary Account Email</label>
+                          <input
+                            type="email"
+                            value={accountEmail}
+                            onChange={(e) => setAccountEmail(e.target.value)}
+                            className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500/50"
+                          />
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[11px] font-semibold text-gray-400">Change Password</label>
+                          <input
+                            type="password"
+                            placeholder="New password"
+                            className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500/50"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 p-4 border border-white/5 rounded-xl space-y-3">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Active User Sessions</span>
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center text-xs font-medium text-white border-b border-white/5 pb-2">
+                            <div>
+                              <p className="text-purple-300">Windows PC • Chrome (Current session)</p>
+                              <p className="text-[9px] text-gray-500 mt-0.5">Kolkata, India • IP: 157.44.18.29</p>
+                            </div>
+                            <span className="px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 text-[9px] font-bold rounded-lg uppercase tracking-wider">Active</span>
+                          </div>
+                          <div className="flex justify-between items-center text-xs font-medium text-white pt-1">
+                            <div>
+                              <p className="text-gray-300">iPhone 15 Pro • Safari App</p>
+                              <p className="text-[9px] text-gray-500 mt-0.5">Hyderabad, India • 2 hours ago</p>
+                            </div>
+                            <button onClick={() => showToast("Device session terminated")} className="text-[10px] text-red-400 hover:underline">
+                              Revoke
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center border-t border-white/5 pt-4">
+                        <button onClick={() => showToast("Logged out of all other devices")} className="px-3 py-1.5 bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-xs font-semibold rounded-xl text-red-400 transition-colors">
+                          Logout From All Devices
+                        </button>
+                        <button onClick={() => showToast("Account details updated successfully!")} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-xs font-bold rounded-xl text-white shadow-lg shadow-purple-600/20">
+                          Save Account Settings
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* APPEARANCE SETTINGS */}
+                  {settingsSection === "appearance" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Appearance & Branding</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Customize theme palettes, layouts, and global typography instantly.</p>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-semibold text-gray-400 block">Theme Select</label>
+                          <div className="grid grid-cols-3 gap-3">
+                            {[
+                              { id: "dark", label: "Dark Mode", active: isDarkMode, action: () => setIsDarkMode(true) },
+                              { id: "light", label: "Light Mode", active: !isDarkMode, action: () => setIsDarkMode(false) },
+                              { id: "system", label: "System Default", active: false, action: () => showToast("System mode sync initialized") }
+                            ].map((theme) => (
+                              <button
+                                key={theme.id}
+                                onClick={theme.action}
+                                className={`p-3 rounded-xl border text-center text-xs font-semibold transition-all ${
+                                  theme.active
+                                    ? "bg-purple-600/20 border-purple-500 text-purple-300 shadow-md shadow-purple-500/5"
+                                    : "bg-white/5 border-white/5 text-gray-400 hover:text-white"
+                                }`}
+                              >
+                                {theme.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-semibold text-gray-400 block">Accent Accent Color</label>
+                          <div className="flex gap-3">
+                            {[
+                              { name: "purple", color: "bg-purple-500 border-purple-400" },
+                              { name: "blue", color: "bg-blue-500 border-blue-400" },
+                              { name: "pink", color: "bg-pink-500 border-pink-400" },
+                              { name: "emerald", color: "bg-emerald-500 border-emerald-400" }
+                            ].map((item) => (
+                              <button
+                                key={item.name}
+                                onClick={() => {
+                                  setAccentColor(item.name);
+                                  showToast(`Accent color updated to ${item.name}!`);
+                                }}
+                                className={`h-6 w-6 rounded-full border-2 ${item.color} transition-transform ${
+                                  accentColor === item.name ? "scale-125 shadow-lg" : "opacity-60 hover:opacity-100"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-semibold text-gray-400 block">Sidebar Navigation State</label>
+                          <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                            <div>
+                              <p>Collapse Sidebar Menu</p>
+                              <p className="text-[9px] text-gray-500 mt-0.5">Hides secondary sidebar labels to maximize screen real estate.</p>
+                            </div>
+                            <input
+                              type="checkbox"
+                              checked={sidebarCollapsed}
+                              onChange={(e) => {
+                                setSidebarCollapsed(e.target.checked);
+                                showToast(`Sidebar collapsed: ${e.target.checked}`);
+                              }}
+                              className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-semibold text-gray-400 block">Visual Motion & Effects</label>
+                          <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                            <div>
+                              <p>Smooth Dashboard Animations</p>
+                              <p className="text-[9px] text-gray-500 mt-0.5">Enables Framer Motion micro-effects across metrics and tools.</p>
+                            </div>
+                            <input
+                              type="checkbox"
+                              checked={animationsEnabled}
+                              onChange={(e) => {
+                                setAnimationsEnabled(e.target.checked);
+                                showToast(`Animations: ${e.target.checked ? "Enabled" : "Disabled"}`);
+                              }}
+                              className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* NOTIFICATION SETTINGS */}
+                  {settingsSection === "notifications" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Notification Settings</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Control live email messaging feeds and real-time browser push notifications.</p>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="space-y-3">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Email Dispatches</span>
+                          {[
+                            { state: notiAiUpdates, setter: setNotiAiUpdates, title: "AI Generation Logs", desc: "Send summary metrics of bulk-generated creator scripts." },
+                            { state: notiMarketing, setter: setNotiMarketing, title: "Creator Academy Newsletter", desc: "Tips, tricks, and case studies of viral YouTube channels." },
+                            { state: notiSecurity, setter: setNotiSecurity, title: "Security Alerts & Tokens", desc: "Notification upon new login detected or API tokens modified." }
+                          ].map((item, idx) => (
+                            <div key={idx} className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                              <div>
+                                <p>{item.title}</p>
+                                <p className="text-[9px] text-gray-500 mt-0.5">{item.desc}</p>
+                              </div>
+                              <input
+                                type="checkbox"
+                                checked={item.state}
+                                onChange={(e) => item.setter(e.target.checked)}
+                                className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50"
+                              />
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="space-y-3">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Push Notifications</span>
+                          {[
+                            { state: notiPushWorkflows, setter: setNotiPushWorkflows, title: "Workflow Automation Completions", desc: "Send desktop notification when long scripts are fully rendered." },
+                            { state: notiPushTrends, setter: setNotiPushTrends, title: "High-Priority Trend Radar Alerts", desc: "Push notification when new viral topics match your channel niche." }
+                          ].map((item, idx) => (
+                            <div key={idx} className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                              <div>
+                                <p>{item.title}</p>
+                                <p className="text-[9px] text-gray-500 mt-0.5">{item.desc}</p>
+                              </div>
+                              <input
+                                type="checkbox"
+                                checked={item.state}
+                                onChange={(e) => item.setter(e.target.checked)}
+                                className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center border-t border-white/5 pt-4">
+                        <button onClick={() => showToast("Test notification dispatched! Check your desktop.")} className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/5 text-xs font-semibold rounded-xl text-white transition-colors">
+                          Send Test Notification
+                        </button>
+                        <button onClick={() => showToast("Notification configurations saved successfully!")} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-xs font-bold rounded-xl text-white shadow-lg shadow-purple-600/20">
+                          Save Preferences
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* AI PREFERENCES */}
+                  {settingsSection === "ai" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">AI Content Preferences</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Control the tone, temperature, and length outputs of the Gemini API models.</p>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
+                            <label className="text-[11px] font-semibold text-gray-400">Default AI Tone</label>
+                            <select
+                              value={prefTone}
+                              onChange={(e) => setPrefTone(e.target.value)}
+                              className="w-full px-3 py-2 bg-[#0c0a1c] border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                            >
+                              <option>Witty & Engaging</option>
+                              <option>Informative & Educational</option>
+                              <option>Professional & Academic</option>
+                              <option>Hype & Energetic</option>
+                            </select>
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[11px] font-semibold text-gray-400">Preferred Language</label>
+                            <select
+                              value={prefLang}
+                              onChange={(e) => setPrefLang(e.target.value)}
+                              className="w-full px-3 py-2 bg-[#0c0a1c] border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                            >
+                              <option>English</option>
+                              <option>Spanish (Español)</option>
+                              <option>Hindi (हिंदी)</option>
+                              <option>French (Français)</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center text-[11px] font-semibold text-gray-400">
+                            <span>Creativity Level (Temperature)</span>
+                            <span className="text-purple-400 font-mono">{prefCreativity}</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0.1"
+                            max="1.0"
+                            step="0.1"
+                            value={prefCreativity}
+                            onChange={(e) => setPrefCreativity(parseFloat(e.target.value))}
+                            className="w-full accent-purple-500"
+                          />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <label className="text-[11px] font-semibold text-gray-400 block">Default Response Size</label>
+                          <div className="flex gap-2">
+                            {["Short (100w)", "Medium (300w)", "Long (600w)"].map((len) => (
+                              <button
+                                key={len}
+                                onClick={() => setPrefLength(len)}
+                                className={`flex-1 py-2 rounded-xl border text-xs font-semibold transition-all ${
+                                  prefLength === len
+                                    ? "bg-purple-600/20 border-purple-500 text-purple-300"
+                                    : "bg-white/5 border-white/5 text-gray-400 hover:text-white"
+                                }`}
+                              >
+                                {len}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center border-t border-white/5 pt-4">
+                        <button onClick={() => {
+                          setPrefTone("Witty & Engaging");
+                          setPrefLang("English");
+                          setPrefCreativity(0.7);
+                          setPrefLength("Medium (300w)");
+                          showToast("AI preferences reset to factory defaults.");
+                        }} className="text-xs text-gray-400 hover:underline">
+                          Reset Defaults
+                        </button>
+                        <button onClick={() => showToast("AI Engine preferences saved!")} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-xs font-bold rounded-xl text-white shadow-lg shadow-purple-600/20">
+                          Save AI Settings
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* INTEGRATIONS SETTINGS */}
+                  {settingsSection === "integrations" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Social Media Channels</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Directly connect your API channels to distribute scheduled posts instantly.</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {[
+                          { id: "youtube", label: "YouTube Studio", desc: "Publishes shorts & tracks view analytics." },
+                          { id: "instagram", label: "Instagram Reels", desc: "Syncs carousel templates and stories." },
+                          { id: "tiktok", label: "TikTok Content Hub", desc: "Auto-uploads short-form mobile videos." },
+                          { id: "linkedin", label: "LinkedIn Publisher", desc: "Posts text scripts and PDFs." }
+                        ].map((plat) => {
+                          const isConnected = socialsConnected[plat.id];
+                          return (
+                            <div key={plat.id} className="p-4 bg-white/5 border border-white/5 rounded-xl flex justify-between items-center">
+                              <div>
+                                <h4 className="text-xs font-bold text-white">{plat.label}</h4>
+                                <p className="text-[9px] text-gray-500 mt-0.5">{plat.desc}</p>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  setSocialsConnected(prev => ({ ...prev, [plat.id]: !isConnected }));
+                                  showToast(`${plat.label} ${!isConnected ? "Connected" : "Disconnected"} successfully!`);
+                                }}
+                                className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-colors ${
+                                  isConnected
+                                    ? "bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/25"
+                                    : "bg-purple-600 hover:bg-purple-500 text-white"
+                                }`}
+                              >
+                                {isConnected ? "Disconnect" : "Connect"}
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SECURITY SETTINGS */}
+                  {settingsSection === "security" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Security & Access Protection</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Keep your account secure with multi-factor authentication and keys.</p>
+                      </div>
+
+                      <div className="flex justify-between items-center bg-white/5 p-4 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                        <div>
+                          <p>Two-Factor Authentication (2FA)</p>
+                          <p className="text-[9px] text-gray-500 mt-0.5">Increases account security by requiring an OTP authenticator app verification code.</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            if (!enableTwoFactor) {
+                              setShowTwoFactorModal(true);
+                            } else {
+                              setEnableTwoFactor(false);
+                              showToast("2FA disabled.");
+                            }
+                          }}
+                          className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-colors ${
+                            enableTwoFactor
+                              ? "bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20"
+                              : "bg-purple-600 hover:bg-purple-500 text-white"
+                          }`}
+                        >
+                          {enableTwoFactor ? "Disable" : "Configure 2FA"}
+                        </button>
+                      </div>
+
+                      {/* 2FA Configuration Modal (Simulated) */}
+                      {showTwoFactorModal && (
+                        <div className="bg-[#0c0a1c] border border-white/10 p-5 rounded-2xl space-y-4">
+                          <h4 className="text-xs font-bold text-white">Configure Authenticator App</h4>
+                          <div className="flex flex-col sm:flex-row items-center gap-4 bg-white/5 p-4 rounded-xl">
+                            {/* Dummy QR Code */}
+                            <div className="h-28 w-28 bg-white p-2 rounded-xl flex items-center justify-center">
+                              <div className="h-full w-full bg-[repeating-conic-gradient(#000_0_25%,#fff_0_50%)] bg-[size:10px_10px]" />
+                            </div>
+                            <div className="text-xs space-y-2">
+                              <p className="text-gray-300">Scan this QR Code in your Google Authenticator or Duo app, then input the verified code below.</p>
+                              <p className="text-[10px] text-purple-400 font-mono">Secret: VF2A_938FD8942A8C</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              maxLength={6}
+                              placeholder="000 000"
+                              className="px-3 py-1.5 bg-white/5 border border-white/5 rounded-xl text-xs text-white text-center tracking-widest font-mono"
+                            />
+                            <button
+                              onClick={() => {
+                                setEnableTwoFactor(true);
+                                setShowTwoFactorModal(false);
+                                showToast("2FA configured successfully!");
+                              }}
+                              className="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-xs font-bold rounded-xl text-white"
+                            >
+                              Verify
+                            </button>
+                            <button
+                              onClick={() => setShowTwoFactorModal(false)}
+                              className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-xs font-bold rounded-xl text-gray-300"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* BILLING & SUBSCRIPTION */}
+                  {settingsSection === "billing" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Subscription & Invoices</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Control billing cycles, upgrade levels, and download invoices.</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {[
+                          { name: "Free Tier", price: "$0", active: false },
+                          { name: "Pro Studio", price: "$19/mo", active: true },
+                          { name: "Enterprise Hub", price: "$99/mo", active: false }
+                        ].map((plan) => (
+                          <div
+                            key={plan.name}
+                            className={`p-4 rounded-xl border flex flex-col justify-between h-32 ${
+                              plan.active
+                                ? "bg-purple-600/10 border-purple-500 text-purple-300"
+                                : "bg-white/5 border-white/5 text-gray-300"
+                            }`}
+                          >
+                            <div>
+                              <p className="text-xs font-bold">{plan.name}</p>
+                              <p className="text-xl font-black mt-1 text-white">{plan.price}</p>
+                            </div>
+                            {plan.active ? (
+                              <span className="text-[9px] uppercase tracking-wider font-bold text-purple-400">Current active plan</span>
+                            ) : (
+                              <button onClick={() => showToast(`Upgraded to ${plan.name}!`)} className="w-full py-1 bg-white/5 hover:bg-white/10 text-[9px] uppercase tracking-wider font-bold rounded-lg text-white">
+                                Activate
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="space-y-3">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Billing History</span>
+                        <div className="space-y-2">
+                          {[
+                            { id: "INV-29004", date: "May 15, 2026", amount: "$19.00" },
+                            { id: "INV-28491", date: "Apr 15, 2026", amount: "$19.00" }
+                          ].map((inv) => (
+                            <div key={inv.id} className="flex justify-between items-center text-xs text-white border-b border-white/5 pb-2">
+                              <div>
+                                <p className="font-semibold">{inv.id}</p>
+                                <p className="text-[9px] text-gray-500 mt-0.5">{inv.date}</p>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span className="font-mono text-xs">{inv.amount}</span>
+                                <button onClick={() => showToast(`Downloaded invoice ${inv.id}`)} className="p-1 hover:text-purple-400 text-gray-500">
+                                  <Download className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* WORKSPACE SETTINGS */}
+                  {settingsSection === "workspace" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Workspace Configuration</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Define name details, workspace profiles, and invite scopes.</p>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-semibold text-gray-400">Workspace Name</label>
+                        <input
+                          type="text"
+                          value={workspaceName}
+                          onChange={(e) => setWorkspaceName(e.target.value)}
+                          className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500/50"
+                        />
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button onClick={() => showToast("Workspace logo updated")} className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-xl text-white border border-white/5">
+                          Change Workspace Logo
+                        </button>
+                      </div>
+
+                      <div className="flex justify-end border-t border-white/5 pt-4">
+                        <button onClick={() => showToast("Workspace details updated successfully!")} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-xs font-bold rounded-xl text-white">
+                          Save Changes
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* TEAM SETTINGS */}
+                  {settingsSection === "team" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Team Collaboration</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Invite editors, manage permissions, and assign viewer tags.</p>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <input
+                          type="email"
+                          placeholder="colleague@domain.com"
+                          value={inviteEmail}
+                          onChange={(e) => setInviteEmail(e.target.value)}
+                          className="flex-1 px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                        />
+                        <select
+                          value={inviteRole}
+                          onChange={(e) => setInviteRole(e.target.value)}
+                          className="px-3 py-2 bg-[#0c0a1c] border border-white/5 rounded-xl text-xs text-white"
+                        >
+                          <option>Editor</option>
+                          <option>Admin</option>
+                          <option>Viewer</option>
+                        </select>
+                        <button
+                          onClick={() => {
+                            if (!inviteEmail) return;
+                            setTeamMembers(prev => [...prev, { email: inviteEmail, role: inviteRole }]);
+                            setInviteEmail("");
+                            showToast(`Invite sent to ${inviteEmail}!`);
+                          }}
+                          className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-xs font-bold rounded-xl text-white"
+                        >
+                          Invite Member
+                        </button>
+                      </div>
+
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Collaborator List</span>
+                        <div className="space-y-2">
+                          {teamMembers.map((member) => (
+                            <div key={member.email} className="flex justify-between items-center text-xs text-white border-b border-white/5 pb-2">
+                              <span>{member.email}</span>
+                              <div className="flex items-center gap-3">
+                                <span className="px-2 py-0.5 bg-purple-500/20 text-purple-300 text-[9px] font-bold rounded-lg uppercase tracking-wider">{member.role}</span>
+                                {member.role !== "Owner" && (
+                                  <button
+                                    onClick={() => {
+                                      setTeamMembers(prev => prev.filter(m => m.email !== member.email));
+                                      showToast("Member revoked");
+                                    }}
+                                    className="text-[10px] text-red-400 hover:underline"
+                                  >
+                                    Revoke
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* API SETTINGS */}
+                  {settingsSection === "api" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">API Authentication Keys</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Control live programmatic access keys and endpoint webhooks.</p>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <input
+                          type="text"
+                          placeholder="Key label (e.g. Server Key)"
+                          value={newKeyName}
+                          onChange={(e) => setNewKeyName(e.target.value)}
+                          className="flex-1 px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                        />
+                        <button
+                          onClick={() => {
+                            if (!newKeyName) return;
+                            const newKey = {
+                              id: `key_${Date.now()}`,
+                              key: `vf_live_${Math.random().toString(36).substring(2, 15)}...`,
+                              name: newKeyName,
+                              date: new Date().toISOString().split("T")[0]
+                            };
+                            setApiKeys(prev => [...prev, newKey]);
+                            setNewKeyName("");
+                            showToast(`API Key "${newKeyName}" generated!`);
+                          }}
+                          className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-xs font-bold rounded-xl text-white"
+                        >
+                          Generate Key
+                        </button>
+                      </div>
+
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Access Key Vault</span>
+                        <div className="space-y-2">
+                          {apiKeys.map((k) => (
+                            <div key={k.id} className="flex justify-between items-center text-xs text-white border-b border-white/5 pb-2">
+                              <div>
+                                <p className="font-semibold">{k.name}</p>
+                                <p className="text-[9px] text-gray-500 mt-0.5">Generated on: {k.date} • {k.key}</p>
+                              </div>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(k.key);
+                                    showToast("Copied API key to clipboard!");
+                                  }}
+                                  className="p-1 hover:text-purple-400 text-gray-500"
+                                >
+                                  <Copy className="h-3.5 w-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setApiKeys(prev => prev.filter(key => key.id !== k.id));
+                                    showToast("API Key revoked successfully.");
+                                  }}
+                                  className="text-[10px] text-red-400 hover:underline"
+                                >
+                                  Revoke
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 pt-2">
+                        <label className="text-[11px] font-semibold text-gray-400">Webhook Receiver Endpoint</label>
+                        <input
+                          type="text"
+                          value={webhookUrl}
+                          onChange={(e) => setWebhookUrl(e.target.value)}
+                          className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                        />
+                        <button onClick={() => showToast("Webhook receiver updated")} className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-xl text-white">
+                          Save Webhook URL
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* LANGUAGE & REGION */}
+                  {settingsSection === "language" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Language & Region</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Configure preferred timezone targets and standard local formatting conventions.</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label className="text-[11px] font-semibold text-gray-400">Display Language</label>
+                          <select
+                            value={regionLanguage}
+                            onChange={(e) => {
+                              setRegionLanguage(e.target.value);
+                              showToast(`Language switched to ${e.target.value}`);
+                            }}
+                            className="w-full px-3 py-2 bg-[#0c0a1c] border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                          >
+                            <option value="en-US">English (US)</option>
+                            <option value="es-ES">Spanish (Español)</option>
+                            <option value="fr-FR">French (Français)</option>
+                            <option value="de-DE">German (Deutsch)</option>
+                          </select>
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[11px] font-semibold text-gray-400">Timezone Offset</label>
+                          <select
+                            value={regionTimezone}
+                            onChange={(e) => {
+                              setRegionTimezone(e.target.value);
+                              showToast(`Timezone offset synced to ${e.target.value}`);
+                            }}
+                            className="w-full px-3 py-2 bg-[#0c0a1c] border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                          >
+                            <option value="UTC+5:30 (Kolkata)">UTC+5:30 (Kolkata)</option>
+                            <option value="UTC-5:00 (New York)">UTC-5:00 (New York)</option>
+                            <option value="UTC+0:00 (London)">UTC+0:00 (London)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* EXPORT & BACKUP */}
+                  {settingsSection === "export" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Export Account Archives</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Download local backups of content records, calendar history, or script files.</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {[
+                          { format: "CSV", label: "Analytics Report", action: () => showToast("Downloading analytics report (CSV)") },
+                          { format: "PDF", label: "Script Documents", action: () => showToast("Exporting scripted layouts (PDF)") },
+                          { format: "JSON", label: "Complete DB Export", action: () => showToast("Exporting DB history (JSON)") }
+                        ].map((exp) => (
+                          <button
+                            key={exp.format}
+                            onClick={exp.action}
+                            className="p-4 bg-white/5 border border-white/5 rounded-xl text-center space-y-2 hover:bg-white/10 transition-colors"
+                          >
+                            <Download className="h-5 w-5 text-purple-400 mx-auto" />
+                            <div>
+                              <p className="text-xs font-bold text-white">Download {exp.format}</p>
+                              <p className="text-[9px] text-gray-500 mt-0.5">{exp.label}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* PRIVACY SETTINGS */}
+                  {settingsSection === "privacy" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Privacy Controls</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Control how your usage statistics and platform behaviors are shared.</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p>Anonymous Crash Reporting</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Share anonymous crash logs with the development team to fix runtime errors.</p>
+                          </div>
+                          <input type="checkbox" defaultChecked className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50" />
+                        </div>
+                        <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p>Search Indexing Visibility</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Allow public search engines like Google to index your dashboard portfolio workspace.</p>
+                          </div>
+                          <input type="checkbox" className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CONNECTED APPS */}
+                  {settingsSection === "connected-apps" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Authorized Third-Party Applications</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Revoke access tokens or check active integrations that connect to your studio.</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        {[
+                          { name: "Gemini Studio API", desc: "Access to read scripts and schedule content.", date: "Authorized 2 days ago" },
+                          { name: "Canva Design Connector", desc: "Access to sync created templates into dashboard.", date: "Authorized last week" }
+                        ].map((app) => (
+                          <div key={app.name} className="flex justify-between items-center bg-white/5 p-4 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                            <div>
+                              <p>{app.name}</p>
+                              <p className="text-[9px] text-gray-500 mt-0.5">{app.desc} • {app.date}</p>
+                            </div>
+                            <button onClick={() => showToast(`${app.name} access revoked.`)} className="text-[10px] text-red-400 hover:underline">
+                              Revoke Access
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* KEYBOARD SHORTCUTS */}
+                  {settingsSection === "shortcuts" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Keyboard Shortcuts</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Configure hotkeys to trigger AI operations or toggle menus instantly.</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        {[
+                          { label: "Trigger Script Generation", state: shortcuts.generate, key: "generate" },
+                          { label: "Toggle Central Dashboard", state: shortcuts.openDashboard, key: "openDashboard" },
+                          { label: "Save Active Content Project", state: shortcuts.save, key: "save" },
+                          { label: "Activate AI Copilot Console", state: shortcuts.copilot, key: "copilot" }
+                        ].map((s) => (
+                          <div key={s.key} className="flex justify-between items-center bg-white/5 p-3 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                            <span>{s.label}</span>
+                            <input
+                              type="text"
+                              value={s.state}
+                              onChange={(e) => {
+                                setShortcuts(prev => ({ ...prev, [s.key]: e.target.value }));
+                              }}
+                              className="w-24 text-center py-1 bg-black/40 border border-white/10 rounded-lg text-[10px] font-bold text-purple-400 uppercase font-mono"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ACCESSIBILITY */}
+                  {settingsSection === "accessibility" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Accessibility Features</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Optimize contrast configurations and layout scaling.</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p>High Contrast Mode</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Enforces solid white borders and high-visibility text backgrounds.</p>
+                          </div>
+                          <input type="checkbox" onChange={(e) => showToast(`High contrast: ${e.target.checked}`)} className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50" />
+                        </div>
+                        <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p>Reduced Motion</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Disables slide-in panel animations and fading transitions.</p>
+                          </div>
+                          <input type="checkbox" onChange={(e) => showToast(`Reduced motion: ${e.target.checked}`)} className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ADVANCED */}
+                  {settingsSection === "advanced" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Advanced Configuration</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Manage debugging features and local development modes.</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p>Production Performance Mode</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Minimizes client memory consumption by batching metric calculations.</p>
+                          </div>
+                          <input type="checkbox" defaultChecked className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50" />
+                        </div>
+                        <div className="flex justify-between items-center bg-white/5 p-3.5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p>Enable Experimental Tools</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Enables early access to unreleased AI script modules.</p>
+                          </div>
+                          <input type="checkbox" onChange={(e) => showToast(`Experimental features: ${e.target.checked}`)} className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500/50" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DATA MANAGEMENT */}
+                  {settingsSection === "data" && (
+                    <div className="glass-card p-6 border-white/5 bg-white/[0.02] space-y-6">
+                      <div className="border-b border-white/5 pb-4">
+                        <h3 className="text-base font-bold text-white">Data Control Center</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Manage, clear, or request account database deletions.</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="p-4 bg-white/5 border border-white/5 rounded-xl space-y-2">
+                          <h4 className="text-xs font-bold text-white">Wipe Search & Script Cache</h4>
+                          <p className="text-[9px] text-gray-500">Clears offline history data to free up browser storage space.</p>
+                          <button onClick={() => showToast("Local caches cleared.")} className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/5 text-[10px] font-bold rounded-lg text-white">
+                            Clear Cache
+                          </button>
+                        </div>
+                        <div className="p-4 bg-white/5 border border-white/5 rounded-xl space-y-2">
+                          <h4 className="text-xs font-bold text-white">Wipe Project Records</h4>
+                          <p className="text-[9px] text-gray-500">Irreversibly clears all generated scripts from database state.</p>
+                          <button onClick={() => showToast("All project history wiped.")} className="px-3 py-1.5 bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 text-[10px] font-bold rounded-lg">
+                            Wipe History
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DANGER ZONE */}
+                  {settingsSection === "danger" && (
+                    <div className="glass-card p-6 border-red-500/10 bg-red-500/[0.01] space-y-6">
+                      <div className="border-b border-red-500/10 pb-4">
+                        <h3 className="text-base font-bold text-red-400">Danger Zone</h3>
+                        <p className="text-[11px] text-gray-500 mt-0.5">Irreversible actions that will permanently delete your workspaces or personal account.</p>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 bg-white/5 p-4 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p className="text-gray-200">Remove Creator Workspace</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Permanently deletes this workspace and all mapped scheduling metrics.</p>
+                          </div>
+                          <button onClick={() => setShowDeleteWorkspaceModal(true)} className="px-3.5 py-1.5 bg-red-500 hover:bg-red-600 text-xs font-bold rounded-xl text-white">
+                            Delete Workspace
+                          </button>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 bg-white/5 p-4 border border-white/5 rounded-xl text-xs font-semibold text-white">
+                          <div>
+                            <p className="text-gray-200">Delete Personal Account</p>
+                            <p className="text-[9px] text-gray-500 mt-0.5">Irreversibly deletes account data and terminates subscription billings.</p>
+                          </div>
+                          <button onClick={() => setShowDeleteAccountModal(true)} className="px-3.5 py-1.5 bg-red-500 hover:bg-red-600 text-xs font-bold rounded-xl text-white">
+                            Delete Account
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Delete Workspace Confirmation Modal */}
+                      {showDeleteWorkspaceModal && (
+                        <div className="bg-[#0c0a1c] border border-red-500/20 p-5 rounded-2xl space-y-3">
+                          <h4 className="text-xs font-bold text-red-400">Are you absolutely sure?</h4>
+                          <p className="text-[11px] text-gray-300">This action cannot be undone. This will permanently delete the workspace **{workspaceName}**.</p>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                setWorkspaceName("Default Studio");
+                                setShowDeleteWorkspaceModal(false);
+                                showToast("Workspace deleted. Loaded default fallback.");
+                              }}
+                              className="px-4 py-1.5 bg-red-600 hover:bg-red-500 text-xs font-bold rounded-xl text-white"
+                            >
+                              Yes, Delete Workspace
+                            </button>
+                            <button onClick={() => setShowDeleteWorkspaceModal(false)} className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-xs font-bold rounded-xl text-gray-300">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Delete Account Confirmation Modal */}
+                      {showDeleteAccountModal && (
+                        <div className="bg-[#0c0a1c] border border-red-500/20 p-5 rounded-2xl space-y-3">
+                          <h4 className="text-xs font-bold text-red-400">Confirm Account Deletion</h4>
+                          <p className="text-[11px] text-gray-300">All creator data, script databases, and active sessions will be completely purged from our servers.</p>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                localStorage.removeItem("userSession");
+                                window.location.href = "/login";
+                              }}
+                              className="px-4 py-1.5 bg-red-600 hover:bg-red-500 text-xs font-bold rounded-xl text-white"
+                            >
+                              Permanently Delete Account
+                            </button>
+                            <button onClick={() => setShowDeleteAccountModal(false)} className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-xs font-bold rounded-xl text-gray-300">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
