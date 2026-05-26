@@ -1,0 +1,16 @@
+{
+  "name": "ViralFlow AI Creator OS",
+  "short_name": "ViralFlow",
+  "description": "Billion-dollar AI Content Automation & Creator platform.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#060410",
+  "theme_color": "#8b5cf6",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

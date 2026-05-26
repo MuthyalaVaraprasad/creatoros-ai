@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #060410;
+  --color-foreground: #f8fafc;
+  
+  --color-primary-500: #8b5cf6;
+  --color-primary-600: #7c3aed;
+  
+  --color-secondary-500: #ec4899;
+  --color-secondary-600: #db2777;
+
+  --color-card: rgba(255, 255, 255, 0.03);
+  --color-card-border: rgba(255, 255, 255, 0.08);
+  --color-card-hover: rgba(255, 255, 255, 0.06);
+  
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary-500/30 selection:text-white;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card border border-card-border backdrop-blur-md rounded-2xl transition-all duration-300;
+  }
+  .glass-card:hover {
+    @apply bg-card-hover border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)];
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500;
+  }
+  .glow-button {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+  .glow-button::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-primary-500 to-secondary-500 opacity-0 transition-opacity duration-300 z-[-1];
+  }
+  .glow-button:hover::before {
+    @apply opacity-100;
+  }
+  .neon-border {
+    @apply relative rounded-xl border border-transparent bg-clip-padding;
+  }
+  .neon-border::after {
+    content: '';
+    @apply absolute -inset-[1px] -z-10 rounded-xl bg-gradient-to-r from-primary-500 via-secondary-500 to-blue-500 opacity-50 blur-sm transition-opacity duration-300;
+  }
+  .neon-border:hover::after {
+    @apply opacity-100;
+  }
+}
