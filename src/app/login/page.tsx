@@ -5,11 +5,13 @@ import Link from "next/link";
 import { Sparkles, Mail, Lock, ArrowRight } from "lucide-react";
 import { 
   auth, 
+  db,
   googleProvider, 
   githubProvider, 
   signInWithPopup, 
   signInWithEmailAndPassword 
 } from "@/lib/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -31,11 +33,44 @@ export default function Login() {
       if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        
+        // Fetch additional fields from Firestore if exist
+        let onboardingCompleted = false;
+        let subscription = "Free Tier";
+        let displayName = user.displayName || email.split("@")[0];
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userDocRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            onboardingCompleted = data.onboardingCompleted || false;
+            subscription = data.subscription || "Free Tier";
+            displayName = data.name || displayName;
+          } else {
+            // Create user document if doesn't exist
+            await setDoc(userDocRef, {
+              uid: user.uid,
+              name: displayName,
+              email: user.email || "",
+              avatar: user.photoURL || "",
+              provider: "password",
+              createdAt: new Date().toISOString(),
+              subscription: "Free Tier",
+              onboardingCompleted: false
+            });
+          }
+        } catch (dbErr) {
+          console.error("Error reading user from Firestore:", dbErr);
+        }
+
         localStorage.setItem("userSession", JSON.stringify({
+          uid: user.uid,
           email: user.email,
-          name: user.displayName || email.split("@")[0],
+          name: displayName,
           isLoggedIn: true,
-          photoURL: user.photoURL
+          photoURL: user.photoURL,
+          onboardingCompleted,
+          subscription
         }));
         window.location.href = "/dashboard";
         return;
@@ -68,18 +103,51 @@ export default function Login() {
       if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
+
+        // Sync Firestore
+        let onboardingCompleted = false;
+        let subscription = "Free Tier";
+        let displayName = user.displayName || "Google Creator";
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userDocRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            onboardingCompleted = data.onboardingCompleted || false;
+            subscription = data.subscription || "Free Tier";
+            displayName = data.name || displayName;
+          } else {
+            await setDoc(userDocRef, {
+              uid: user.uid,
+              name: displayName,
+              email: user.email || "",
+              avatar: user.photoURL || "",
+              provider: "google.com",
+              createdAt: new Date().toISOString(),
+              subscription: "Free Tier",
+              onboardingCompleted: false
+            });
+          }
+        } catch (dbErr) {
+          console.error("Firestore Google signin sync error:", dbErr);
+        }
+
         localStorage.setItem("userSession", JSON.stringify({
+          uid: user.uid,
           email: user.email,
-          name: user.displayName || "Google Creator",
+          name: displayName,
           isLoggedIn: true,
-          photoURL: user.photoURL
+          photoURL: user.photoURL,
+          needsOnboarding: !onboardingCompleted,
+          onboardingCompleted,
+          subscription
         }));
         window.location.href = "/dashboard";
         return;
       }
 
       // Fallback
-      localStorage.setItem("userSession", JSON.stringify({ email: "google.user@example.com", name: "Google Creator", isLoggedIn: true }));
+      localStorage.setItem("userSession", JSON.stringify({ email: "google.user@example.com", name: "Google Creator", isLoggedIn: true, needsOnboarding: true }));
       window.location.href = "/dashboard";
     } catch (err: any) {
       setError(err.message || "Google Authentication failed");
@@ -95,18 +163,51 @@ export default function Login() {
       if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
         const result = await signInWithPopup(auth, githubProvider);
         const user = result.user;
+
+        // Sync Firestore
+        let onboardingCompleted = false;
+        let subscription = "Free Tier";
+        let displayName = user.displayName || user.email?.split("@")[0] || "GitHub Creator";
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userDocRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            onboardingCompleted = data.onboardingCompleted || false;
+            subscription = data.subscription || "Free Tier";
+            displayName = data.name || displayName;
+          } else {
+            await setDoc(userDocRef, {
+              uid: user.uid,
+              name: displayName,
+              email: user.email || "",
+              avatar: user.photoURL || "",
+              provider: "github.com",
+              createdAt: new Date().toISOString(),
+              subscription: "Free Tier",
+              onboardingCompleted: false
+            });
+          }
+        } catch (dbErr) {
+          console.error("Firestore GitHub signin sync error:", dbErr);
+        }
+
         localStorage.setItem("userSession", JSON.stringify({
+          uid: user.uid,
           email: user.email,
-          name: user.displayName || user.email?.split("@")[0] || "GitHub Creator",
+          name: displayName,
           isLoggedIn: true,
-          photoURL: user.photoURL
+          photoURL: user.photoURL,
+          needsOnboarding: !onboardingCompleted,
+          onboardingCompleted,
+          subscription
         }));
         window.location.href = "/dashboard";
         return;
       }
 
       // Fallback
-      localStorage.setItem("userSession", JSON.stringify({ email: "github.user@example.com", name: "GitHub Creator", isLoggedIn: true }));
+      localStorage.setItem("userSession", JSON.stringify({ email: "github.user@example.com", name: "GitHub Creator", isLoggedIn: true, needsOnboarding: true }));
       window.location.href = "/dashboard";
     } catch (err: any) {
       setError(err.message || "GitHub Authentication failed");

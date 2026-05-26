@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import {
   Sparkles,
   Video,
@@ -52,6 +54,16 @@ import {
 } from "lucide-react";
 
 export default function Dashboard() {
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+
+  // Guard route
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
   // Theme & Navigation
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [activeTab, setActiveTab] = useState("Dashboard");
@@ -542,6 +554,35 @@ export default function Dashboard() {
   const [creatorXp, setCreatorXp] = useState(7450);
   const creatorLevel = "Level 14 - Social Overlord";
 
+  // Sync context user to settings fields
+  useEffect(() => {
+    if (user) {
+      setProfileName(user.name || "");
+      setAccountEmail(user.email || "");
+      setProfileAvatar(user.avatar || "");
+    }
+  }, [user]);
+
+  const handleLogoutAction = async () => {
+    try {
+      await logout();
+      router.push("/login");
+    } catch (err) {
+      showToast("Error logging out");
+    }
+  };
+
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-[#060410] flex items-center justify-center flex-col gap-4">
+        <div className="h-10 w-10 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin"></div>
+        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider animate-pulse">
+          Loading Creator Studio...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen flex flex-col ${isDarkMode ? "bg-[#060410] text-gray-200" : "bg-gray-50 text-gray-800"} font-sans overflow-x-hidden relative pb-16 lg:pb-0`}>
       {/* Toast Alert */}
@@ -752,9 +793,13 @@ export default function Dashboard() {
                 {isDarkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4" />}
               </button>
 
-              <Link href="/" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors" title="Log Out">
+              <button
+                onClick={handleLogoutAction}
+                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                title="Log Out"
+              >
                 <LogOut className="h-4 w-4 text-rose-400" />
-              </Link>
+              </button>
             </div>
           </div>
         </aside>

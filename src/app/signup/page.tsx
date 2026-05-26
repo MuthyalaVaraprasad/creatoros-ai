@@ -5,12 +5,15 @@ import Link from "next/link";
 import { Sparkles, Mail, Lock, User, ArrowRight, CheckCircle2 } from "lucide-react";
 import { 
   auth, 
+  db,
   googleProvider, 
   githubProvider, 
   signInWithPopup, 
   createUserWithEmailAndPassword,
   sendEmailVerification 
 } from "@/lib/firebase";
+import { updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -42,6 +45,21 @@ export default function Signup() {
       // Real Firebase signup
       if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: name });
+        
+        // Save initial user profile in Firestore
+        const userDocRef = doc(db, "users", userCredential.user.uid);
+        await setDoc(userDocRef, {
+          uid: userCredential.user.uid,
+          name: name,
+          email: email,
+          avatar: "",
+          provider: "password",
+          createdAt: new Date().toISOString(),
+          subscription: "Free Tier",
+          onboardingCompleted: false
+        });
+
         await sendEmailVerification(userCredential.user);
         setShowOtpView(true);
         return;
@@ -66,9 +84,25 @@ export default function Signup() {
     }
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otpCode === "1234" || otpCode.length === 4) {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        localStorage.setItem(
+          "userSession",
+          JSON.stringify({ 
+            email, 
+            name, 
+            isLoggedIn: true, 
+            needsOnboarding: true,
+            onboardingCompleted: false,
+            subscription: "Free Tier"
+          })
+        );
+        window.location.href = "/dashboard";
+        return;
+      }
+
       localStorage.setItem(
         "userSession",
         JSON.stringify({ email, name, isLoggedIn: true, needsOnboarding: true })
@@ -86,6 +120,20 @@ export default function Signup() {
       if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
+
+        // Write to Firestore users collection
+        const userDocRef = doc(db, "users", user.uid);
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          name: user.displayName || "Google Creator",
+          email: user.email || "",
+          avatar: user.photoURL || "",
+          provider: "google.com",
+          createdAt: new Date().toISOString(),
+          subscription: "Free Tier",
+          onboardingCompleted: false
+        }, { merge: true });
+
         localStorage.setItem("userSession", JSON.stringify({
           email: user.email,
           name: user.displayName || "Google Creator",
@@ -114,6 +162,20 @@ export default function Signup() {
       if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
         const result = await signInWithPopup(auth, githubProvider);
         const user = result.user;
+
+        // Write to Firestore users collection
+        const userDocRef = doc(db, "users", user.uid);
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          name: user.displayName || user.email?.split("@")[0] || "GitHub Creator",
+          email: user.email || "",
+          avatar: user.photoURL || "",
+          provider: "github.com",
+          createdAt: new Date().toISOString(),
+          subscription: "Free Tier",
+          onboardingCompleted: false
+        }, { merge: true });
+
         localStorage.setItem("userSession", JSON.stringify({
           email: user.email,
           name: user.displayName || user.email?.split("@")[0] || "GitHub Creator",

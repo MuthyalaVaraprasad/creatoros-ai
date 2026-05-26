@@ -11,6 +11,7 @@ import {
   sendEmailVerification,
   onAuthStateChanged
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "dummy-api-key-for-viralflow-ai",
@@ -24,6 +25,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 // Auth Providers
 const googleProvider = new GoogleAuthProvider();
@@ -31,6 +33,7 @@ const githubProvider = new GithubAuthProvider();
 
 export {
   auth,
+  db,
   googleProvider,
   githubProvider,
   signInWithPopup,
