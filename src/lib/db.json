@@ -1,0 +1,41 @@
+{
+  "users": [
+    {
+      "email": "creator@example.com",
+      "password": "password123",
+      "name": "Creator Pro"
+    }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "title": "5 Secret AI Tools",
+      "type": "Script",
+      "platform": "YouTube",
+      "content": "Want to save hours of work...",
+      "date": "May 26"
+    }
+  ],
+  "calendar": [
+    {
+      "id": "1",
+      "title": "AI Tools You Must Know",
+      "platform": "YouTube",
+      "date": 20,
+      "color": "bg-red-500/20 text-red-400 border-red-500/30"
+    },
+    {
+      "id": "2",
+      "title": "How I Plan My Videos",
+      "platform": "YouTube",
+      "date": 21,
+      "color": "bg-red-500/20 text-red-400 border-red-500/30"
+    }
+  ],
+  "brandKit": {
+    "colorPrimary": "#8b5cf6",
+    "colorSecondary": "#ec4899",
+    "font": "Outfit / Inter",
+    "voice": "Professional, futuristic, slightly cheeky"
+  }
+}

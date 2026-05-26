@@ -3,6 +3,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Sparkles, Mail, Lock, ArrowRight } from "lucide-react";
+import { 
+  auth, 
+  googleProvider, 
+  githubProvider, 
+  signInWithPopup, 
+  signInWithEmailAndPassword 
+} from "@/lib/firebase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,6 +27,21 @@ export default function Login() {
     setLoading(true);
 
     try {
+      // Real Firebase login
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        localStorage.setItem("userSession", JSON.stringify({
+          email: user.email,
+          name: user.displayName || email.split("@")[0],
+          isLoggedIn: true,
+          photoURL: user.photoURL
+        }));
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      // Local API / DB Fallback
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,14 +49,67 @@ export default function Login() {
       });
       const data = await res.json();
       if (data.success) {
-        // Save session locally
         localStorage.setItem("userSession", JSON.stringify(data.data));
         window.location.href = "/dashboard";
       } else {
         setError(data.error || "Authentication failed");
       }
-    } catch (err) {
-      setError("Failed to connect to authentication services");
+    } catch (err: any) {
+      setError(err.message || "Failed to connect to authentication services");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        localStorage.setItem("userSession", JSON.stringify({
+          email: user.email,
+          name: user.displayName || "Google Creator",
+          isLoggedIn: true,
+          photoURL: user.photoURL
+        }));
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      // Fallback
+      localStorage.setItem("userSession", JSON.stringify({ email: "google.user@example.com", name: "Google Creator", isLoggedIn: true }));
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      setError(err.message || "Google Authentication failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGithubLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        const result = await signInWithPopup(auth, githubProvider);
+        const user = result.user;
+        localStorage.setItem("userSession", JSON.stringify({
+          email: user.email,
+          name: user.displayName || user.email?.split("@")[0] || "GitHub Creator",
+          isLoggedIn: true,
+          photoURL: user.photoURL
+        }));
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      // Fallback
+      localStorage.setItem("userSession", JSON.stringify({ email: "github.user@example.com", name: "GitHub Creator", isLoggedIn: true }));
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      setError(err.message || "GitHub Authentication failed");
     } finally {
       setLoading(false);
     }
@@ -129,10 +204,7 @@ export default function Login() {
           {/* Social login buttons */}
           <div className="grid grid-cols-2 gap-4">
             <button 
-              onClick={() => {
-                localStorage.setItem("userSession", JSON.stringify({ email: "google.user@example.com", name: "Google Creator", isLoggedIn: true }));
-                window.location.href = "/dashboard";
-              }} 
+              onClick={handleGoogleLogin} 
               className="py-2.5 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold rounded-xl border border-white/5 flex items-center justify-center gap-2 transition-colors"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -144,10 +216,7 @@ export default function Login() {
               Google
             </button>
             <button 
-              onClick={() => {
-                localStorage.setItem("userSession", JSON.stringify({ email: "github.user@example.com", name: "GitHub Creator", isLoggedIn: true }));
-                window.location.href = "/dashboard";
-              }} 
+              onClick={handleGithubLogin} 
               className="py-2.5 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold rounded-xl border border-white/5 flex items-center justify-center gap-2 transition-colors"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">

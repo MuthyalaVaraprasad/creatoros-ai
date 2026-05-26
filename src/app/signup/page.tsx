@@ -3,6 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Sparkles, Mail, Lock, User, ArrowRight, CheckCircle2 } from "lucide-react";
+import { 
+  auth, 
+  googleProvider, 
+  githubProvider, 
+  signInWithPopup, 
+  createUserWithEmailAndPassword,
+  sendEmailVerification 
+} from "@/lib/firebase";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -31,6 +39,15 @@ export default function Signup() {
     setLoading(true);
 
     try {
+      // Real Firebase signup
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCredential.user);
+        setShowOtpView(true);
+        return;
+      }
+
+      // Local API / DB Fallback
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,8 +59,8 @@ export default function Signup() {
       } else {
         setError(data.error || "Failed to sign up");
       }
-    } catch (err) {
-      setError("Failed to connect to authentication services");
+    } catch (err: any) {
+      setError(err.message || "Failed to connect to authentication services");
     } finally {
       setLoading(false);
     }
@@ -52,7 +69,6 @@ export default function Signup() {
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
     if (otpCode === "1234" || otpCode.length === 4) {
-      // Mock log user session
       localStorage.setItem(
         "userSession",
         JSON.stringify({ email, name, isLoggedIn: true, needsOnboarding: true })
@@ -60,6 +76,62 @@ export default function Signup() {
       window.location.href = "/dashboard";
     } else {
       setOtpError("Invalid verification code. Enter '1234' for verification.");
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        localStorage.setItem("userSession", JSON.stringify({
+          email: user.email,
+          name: user.displayName || "Google Creator",
+          isLoggedIn: true,
+          photoURL: user.photoURL,
+          needsOnboarding: true
+        }));
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      // Fallback
+      localStorage.setItem("userSession", JSON.stringify({ email: "google.user@example.com", name: "Google Creator", isLoggedIn: true, needsOnboarding: true }));
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      setError(err.message || "Google Authentication failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGithubLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        const result = await signInWithPopup(auth, githubProvider);
+        const user = result.user;
+        localStorage.setItem("userSession", JSON.stringify({
+          email: user.email,
+          name: user.displayName || user.email?.split("@")[0] || "GitHub Creator",
+          isLoggedIn: true,
+          photoURL: user.photoURL,
+          needsOnboarding: true
+        }));
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      // Fallback
+      localStorage.setItem("userSession", JSON.stringify({ email: "github.user@example.com", name: "GitHub Creator", isLoggedIn: true, needsOnboarding: true }));
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      setError(err.message || "GitHub Authentication failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -193,10 +265,7 @@ export default function Signup() {
               {/* Social login buttons */}
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  onClick={() => {
-                    localStorage.setItem("userSession", JSON.stringify({ email: "google.user@example.com", name: "Google Creator", isLoggedIn: true, needsOnboarding: true }));
-                    window.location.href = "/dashboard";
-                  }}
+                  onClick={handleGoogleLogin}
                   className="py-2.5 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold rounded-xl border border-white/5 flex items-center justify-center gap-2 transition-colors"
                 >
                   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -208,10 +277,7 @@ export default function Signup() {
                   Google
                 </button>
                 <button
-                  onClick={() => {
-                    localStorage.setItem("userSession", JSON.stringify({ email: "github.user@example.com", name: "GitHub Creator", isLoggedIn: true, needsOnboarding: true }));
-                    window.location.href = "/dashboard";
-                  }}
+                  onClick={handleGithubLogin}
                   className="py-2.5 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold rounded-xl border border-white/5 flex items-center justify-center gap-2 transition-colors"
                 >
                   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">

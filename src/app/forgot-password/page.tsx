@@ -3,15 +3,30 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Sparkles, Mail, ArrowRight, ArrowLeft } from "lucide-react";
+import { auth, sendPasswordResetEmail } from "@/lib/firebase";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    setSubmitted(true);
+    setError("");
+    setLoading(true);
+
+    try {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+        await sendPasswordResetEmail(auth, email);
+      }
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || "Failed to send reset email");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,6 +53,12 @@ export default function ForgotPassword() {
 
         {/* Card Form */}
         <div className="glass-card p-8 border-white/5 bg-white/[0.02]">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs p-3 rounded-lg text-center font-medium mb-4">
+              {error}
+            </div>
+          )}
+
           {!submitted ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-1.5">
@@ -59,9 +80,10 @@ export default function ForgotPassword() {
 
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white rounded-xl text-sm font-bold shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                Send Reset Link <ArrowRight className="h-4 w-4" />
+                {loading ? "Sending..." : "Send Reset Link"} <ArrowRight className="h-4 w-4" />
               </button>
             </form>
           ) : (
