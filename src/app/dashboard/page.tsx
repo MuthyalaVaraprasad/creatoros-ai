@@ -68,6 +68,14 @@ export default function Dashboard() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [activeTab, setActiveTab] = useState("Dashboard");
 
+  // Command Palette & PWA States
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+  const [commandSearch, setCommandSearch] = useState("");
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBanner, setShowInstallBanner] = useState(true);
+  const [showLevelUpModal, setShowLevelUpModal] = useState(false);
+  const [currentLevelNum, setCurrentLevelNum] = useState(14);
+
   // Notifications Toast
   const [toastMessage, setToastMessage] = useState("");
   const showToast = (msg: string) => {
@@ -264,6 +272,27 @@ export default function Dashboard() {
         setBrandVoice(data.data.voice);
       }
     });
+
+    // PWA Install Prompt handler
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    // Keyboard Shortcuts (Ctrl + K)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setShowCommandPalette((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   // 1. Script Generator
@@ -294,7 +323,13 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setScriptOutput(data.data);
+        const mappedData = {
+          hook: data.data.hook || "",
+          intro: data.data.intro || data.data.description || "",
+          body: data.data.body || data.data.script || data.data.sceneBreakdown || "",
+          cta: data.data.cta || ""
+        };
+        setScriptOutput(mappedData);
         setScriptTypingIndex(0);
 
         // Save generated project to DB history
@@ -305,13 +340,14 @@ export default function Dashboard() {
             title: scriptTopic,
             type: "Script",
             platform: scriptPlatform,
-            content: data.data.hook + "\n\n" + data.data.intro + "\n\n" + data.data.body
+            content: mappedData.hook + "\n\n" + mappedData.intro + "\n\n" + mappedData.body
           })
         });
         const savedData = await saveRes.json();
         if (savedData.success) {
           setRecentProjects((prev) => [savedData.data, ...prev]);
         }
+        addXp(1250);
         showToast("Script generated and saved!");
       }
     } catch (e) {
@@ -349,7 +385,11 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setGeneratedHooks(data.data);
+        const hooksArray = typeof data.data === "object" && data.data !== null && !Array.isArray(data.data)
+          ? Object.values(data.data)
+          : data.data;
+        setGeneratedHooks(Array.isArray(hooksArray) ? hooksArray : [JSON.stringify(hooksArray)]);
+        addXp(750);
         showToast("Hooks generated!");
       }
     } catch (e) {
@@ -376,7 +416,11 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setGeneratedHashtags(data.data);
+        const hashtagsArray = Array.isArray(data.data)
+          ? data.data.map((item: any) => typeof item === "object" && item !== null ? (item.tag || JSON.stringify(item)) : item)
+          : (typeof data.data === "object" && data.data !== null ? Object.values(data.data) : data.data);
+        setGeneratedHashtags(Array.isArray(hashtagsArray) ? hashtagsArray : [JSON.stringify(hashtagsArray)]);
+        addXp(500);
         showToast("Hashtags generated!");
       }
     } catch (e) {
@@ -404,7 +448,11 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setGeneratedPrompt(data.data.prompt || data.data.text);
+        const promptText = typeof data.data === "string"
+          ? data.data
+          : (data.data.prompt || data.data.text || JSON.stringify(data.data));
+        setGeneratedPrompt(promptText);
+        addXp(750);
         showToast("Thumbnail prompt generated!");
       }
     } catch (e) {
@@ -504,7 +552,17 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setCaptionOutput(data.data);
+        const raw = data.data;
+        const captionVal = typeof raw === "object" && raw !== null
+          ? {
+              caption: raw.caption || raw.text || JSON.stringify(raw),
+              hashtags: Array.isArray(raw.hashtags) ? raw.hashtags : []
+            }
+          : {
+              caption: typeof raw === "string" ? raw : "",
+              hashtags: []
+            };
+        setCaptionOutput(captionVal);
         showToast("Caption generated successfully!");
       }
     } catch (e) {
@@ -526,7 +584,14 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setFacelessOutput(data.data);
+        const raw = data.data;
+        const formatted = {
+          concept: raw.concept || "",
+          visualPrompts: Array.isArray(raw.visualPrompts) ? raw.visualPrompts : [],
+          narration: Array.isArray(raw.narration) ? raw.narration : [],
+          musicVibe: raw.musicVibe || ""
+        };
+        setFacelessOutput(formatted);
         showToast("Faceless video plan ready!");
       }
     } catch (e) {
@@ -595,7 +660,14 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setResearchBrief(data.data);
+        const raw = data.data;
+        const formatted = {
+          summary: raw.summary || "",
+          stats: Array.isArray(raw.stats) ? raw.stats : [],
+          questions: Array.isArray(raw.questions) ? raw.questions : [],
+          angles: Array.isArray(raw.angles) ? raw.angles : []
+        };
+        setResearchBrief(formatted);
         showToast("Research briefing compiled!");
       }
     } catch (e) {
@@ -619,7 +691,12 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setCampaignOutput(data.data);
+        const raw = data.data;
+        const formatted = {
+          name: raw.name || "",
+          steps: Array.isArray(raw.steps) ? raw.steps : []
+        };
+        setCampaignOutput(formatted);
         showToast("Campaign strategy built!");
       }
     } catch (e) {
@@ -833,11 +910,71 @@ export default function Dashboard() {
   const [abTitleA, setAbTitleA] = useState("I Automated My Faceless YouTube Channel");
   const [abTitleB, setAbTitleB] = useState("How to Build a Faceless AI YouTube Channel in 10 Mins");
   const [abPredictWinner, setAbPredictWinner] = useState("B");
+  const [abScoreA, setAbScoreA] = useState(62);
+  const [abScoreB, setAbScoreB] = useState(89);
+  const [abReason, setAbReason] = useState("Option B has high semantic search relevance. Curiosity triggers (\"10 Mins\") perform 30% better than general hooks (\"I Automated\") in the Tech category.");
+
+  const handleAnalyzeTitles = () => {
+    triggerAutoSave();
+    showToast("Analyzing CTR weights...");
+    
+    // Heuristic scoring function
+    const getScore = (title: string) => {
+      let score = 50; // base score
+      if (!title) return 0;
+      
+      // Length optimization (ideal length: 40-70 chars)
+      if (title.length >= 40 && title.length <= 70) score += 15;
+      else if (title.length > 70) score += 5;
+      else score += 8;
+
+      // Power words check
+      const powerWords = ["automated", "ai", "secret", "viral", "free", "hours", "10", "mins", "hack", "how to", "make", "grow", "fast"];
+      powerWords.forEach(word => {
+        if (title.toLowerCase().includes(word)) score += 5;
+      });
+
+      // Punctuation / Emoji checks
+      if (/[\!\?🔥🚀🤯]/.test(title)) score += 8;
+      
+      // Cap at 98
+      return Math.min(score, 98);
+    };
+
+    const scoreA = getScore(abTitleA);
+    const scoreB = getScore(abTitleB);
+    setAbScoreA(scoreA);
+    setAbScoreB(scoreB);
+    
+    if (scoreA > scoreB) {
+      setAbPredictWinner("A");
+      setAbReason(`Option A is predicted to perform better by ${scoreA - scoreB} points. It has stronger visual hook alignment and matches search query intents.`);
+    } else if (scoreB > scoreA) {
+      setAbPredictWinner("B");
+      setAbReason(`Option B has high semantic search relevance. Actionable keywords and curiosity gaps perform significantly better in the ${creatorNicheInput || "selected"} niche.`);
+    } else {
+      setAbPredictWinner("Tie");
+      setAbReason("Both titles are highly optimized and have equal CTR probability. We recommend testing both variations dynamically.");
+    }
+  };
 
   // L. Gamification System
   const [streakCount, setStreakCount] = useState(12);
   const [creatorXp, setCreatorXp] = useState(7450);
-  const creatorLevel = "Level 14 - Social Overlord";
+  const creatorLevel = `Level ${currentLevelNum} - Social Overlord`;
+
+  const addXp = (amount: number) => {
+    setCreatorXp((prev) => {
+      const nextXp = prev + amount;
+      if (nextXp >= 10000) {
+        setCurrentLevelNum((lvl) => lvl + 1);
+        setShowLevelUpModal(true);
+        showToast("LEVEL UP! XP Limit Reached! 🎉");
+        return nextXp - 10000;
+      }
+      return nextXp;
+    });
+  };
 
   // Sync context user to settings fields
   useEffect(() => {
@@ -1127,8 +1264,10 @@ export default function Dashboard() {
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                 <input
                   type="text"
-                  placeholder="Ask global search AI..."
-                  className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/30"
+                  placeholder="Press Ctrl + K to search..."
+                  onClick={() => setShowCommandPalette(true)}
+                  readOnly
+                  className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white placeholder-gray-500 cursor-pointer focus:outline-none focus:border-purple-500/30"
                 />
               </div>
             </div>
@@ -1190,12 +1329,49 @@ export default function Dashboard() {
                 </div>
               </div>
 
+              {/* PWA Install Banner */}
+              {showInstallBanner && (
+                <div className="bg-gradient-to-r from-purple-900/40 to-pink-900/40 border border-purple-500/20 p-4 rounded-xl flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400">
+                      <Zap className="h-5 w-5 text-purple-400 animate-pulse" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-white">Install CreatorOS AI App</p>
+                      <p className="text-[10px] text-gray-400">Access your workspace directly from your home screen or desktop offline.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => {
+                        if (deferredPrompt) {
+                          deferredPrompt.prompt();
+                          deferredPrompt.userChoice.then((choiceResult: any) => {
+                            if (choiceResult.outcome === "accepted") {
+                              setDeferredPrompt(null);
+                              setShowInstallBanner(false);
+                            }
+                          });
+                        } else {
+                          showToast("Already installed or not supported.");
+                          setShowInstallBanner(false);
+                        }
+                      }} 
+                      className="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-[10px] font-bold transition-all shrink-0"
+                    >
+                      Install App
+                    </button>
+                    <button onClick={() => setShowInstallBanner(false)} className="text-gray-500 hover:text-gray-300 text-xs px-2">✕</button>
+                  </div>
+                </div>
+              )}
+
               {/* Advanced metrics quick cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   { label: "Viral Probability", val: "94.6%", color: "text-emerald-400", desc: "Super High Trend Match" },
                   { label: "A/B Winner CTR", val: "11.2%", color: "text-purple-400", desc: "Predicted from title B" },
-                  { label: "XP to Level Up", val: "2,550", color: "text-amber-400", desc: "Level 14 Active" },
+                  { label: "XP to Level Up", val: (10000 - creatorXp).toLocaleString(), color: "text-amber-400", desc: `Level ${currentLevelNum} Active` },
                   { label: "MRR Saved Time", val: "42 Hours", color: "text-cyan-400", desc: "This week automation" }
                 ].map((m, idx) => (
                   <div key={idx} className="glass-card p-4 border-white/5">
@@ -1297,7 +1473,7 @@ export default function Dashboard() {
                         { name: "YouTube Creator Studio", status: "Active", col: "text-emerald-400" },
                         { name: "Instagram Business Profile", status: "Active", col: "text-emerald-400" },
                         { name: "TikTok Business Account", status: "Active", col: "text-emerald-400" },
-                        { name: "Twitter/X Premium", status: "Not Linked", col: "text-gray-500" }
+                        { name: "Twitter/X Profile", status: "Linked", col: "text-emerald-400" }
                       ].map((item, idx) => (
                         <div key={idx} className="flex justify-between items-center text-xs">
                           <span className="text-gray-400 font-semibold">{item.name}</span>
@@ -2313,12 +2489,33 @@ export default function Dashboard() {
                       <div className="flex justify-between items-center text-xs font-semibold">
                         <span className="text-purple-400">@{comment.user}</span>
                       </div>
+                      <p className="text-xs text-gray-300">"{comment.text}"</p>
+                      
+                      <div className="flex gap-2 pt-1">
+                        <button onClick={() => handleGenerateReply(comment.id, "witty")} className="px-3 py-1.5 bg-purple-600/20 hover:bg-purple-600/30 text-purple-400 rounded-lg text-[10px] font-bold border border-purple-500/20">
+                          Generate Witty Reply 😉
+                        </button>
+                        <button onClick={() => handleGenerateReply(comment.id, "professional")} className="px-3 py-1.5 bg-pink-600/20 hover:bg-pink-600/30 text-pink-400 rounded-lg text-[10px] font-bold border border-pink-500/20">
+                          Generate Professional Reply 👔
+                        </button>
+                      </div>
+
+                      {comment.reply && (
+                        <div className="bg-purple-950/20 border border-purple-500/20 p-3 rounded-lg text-xs mt-2 space-y-2">
+                          <span className="text-[10px] text-purple-400 font-bold block">[AI Generated Reply]</span>
+                          <p className="text-gray-300 italic">"{comment.reply}"</p>
+                          <button onClick={() => copyToClipboard(comment.reply)} className="text-[10px] text-purple-300 hover:underline">
+                            Copy Reply Text
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
               </div>
             </div>
           )}
+
 
           {/* ========================================== */}
           {/* TAB: REPURPOSE HUB */}
@@ -2443,6 +2640,46 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+
+              {/* CTR Trend Graph Row */}
+              <div className="glass-card p-6 border-white/5 space-y-4">
+                <div>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">CTR Retention Forecast Curve</h3>
+                  <p className="text-[10px] text-gray-500 mt-0.5">Forecasted viewer dropoff probability matched against thumbnail contrast metrics.</p>
+                </div>
+                <div className="h-36 w-full relative pt-4">
+                  <svg viewBox="0 0 500 150" className="w-full h-full text-purple-500 overflow-visible" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <line x1="0" y1="30" x2="500" y2="30" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                    <line x1="0" y1="60" x2="500" y2="60" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                    <line x1="0" y1="90" x2="500" y2="90" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                    <line x1="0" y1="120" x2="500" y2="120" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                    
+                    <path d="M 0 120 Q 50 20 100 40 T 200 15 T 300 70 T 400 30 T 500 90" fill="none" stroke="#8b5cf6" strokeWidth="2" />
+                    <path d="M 0 120 Q 50 20 100 40 T 200 15 T 300 70 T 400 30 T 500 90 L 500 150 L 0 150 Z" fill="url(#chartGradient)" />
+                    
+                    <circle cx="100" cy="40" r="3.5" fill="#8b5cf6" stroke="#000" strokeWidth="1" />
+                    <circle cx="200" cy="15" r="3.5" fill="#ec4899" stroke="#000" strokeWidth="1" />
+                    <circle cx="300" cy="70" r="3.5" fill="#8b5cf6" stroke="#000" strokeWidth="1" />
+                    <circle cx="400" cy="30" r="3.5" fill="#ec4899" stroke="#000" strokeWidth="1" />
+                  </svg>
+                  <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-[9px] text-emerald-400 font-bold">
+                    Peak: 12.4% CTR
+                  </div>
+                </div>
+                <div className="flex justify-between items-center text-[9px] text-gray-500 pt-2 border-t border-white/5">
+                  <span>Intro Hook (0s)</span>
+                  <span>Pattern Interrupt (3s)</span>
+                  <span>Setup (10s)</span>
+                  <span>Topic Reveal (15s)</span>
+                  <span>End of Hook (30s)</span>
+                </div>
+              </div>
             </div>
           )}
 
@@ -2481,7 +2718,7 @@ export default function Dashboard() {
                       className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
                     />
                   </div>
-                  <button onClick={() => { triggerAutoSave(); showToast("Predicting winner title..."); }} className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors">
+                  <button onClick={handleAnalyzeTitles} className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors">
                     Analyze CTR Weights
                   </button>
                 </div>
@@ -2493,12 +2730,14 @@ export default function Dashboard() {
 
                   <div className="flex items-center gap-6">
                     <div className="h-20 w-20 rounded-full border-4 border-emerald-500 flex items-center justify-center text-emerald-400 font-mono text-lg font-black bg-emerald-500/10 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                      89%
+                      {Math.max(abScoreA, abScoreB)}%
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-white">Title Option B Predicted Winner!</h4>
+                      <h4 className="text-sm font-bold text-white font-sans uppercase">
+                        {abPredictWinner === "Tie" ? "Tie Predicted!" : `Title Option ${abPredictWinner} Predicted Winner!`}
+                      </h4>
                       <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-                        Option B has high semantic search relevance. Curiosity triggers ("10 Mins") perform 30% better than general hooks ("I Automated") in the Tech category.
+                        {abReason}
                       </p>
                     </div>
                   </div>
@@ -2506,11 +2745,11 @@ export default function Dashboard() {
                   <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                     <div className="p-4 bg-white/5 rounded-xl border border-white/5">
                       <span className="text-[10px] font-bold text-gray-500 uppercase">Option A Score</span>
-                      <p className="text-xl font-bold text-white mt-1">62/100</p>
+                      <p className="text-xl font-bold text-white mt-1">{abScoreA}/100</p>
                     </div>
                     <div className="p-4 bg-purple-600/10 rounded-xl border border-purple-500/20">
                       <span className="text-[10px] font-bold text-purple-400 uppercase">Option B Score</span>
-                      <p className="text-xl font-bold text-purple-300 mt-1">89/100</p>
+                      <p className="text-xl font-bold text-purple-300 mt-1">{abScoreB}/100</p>
                     </div>
                   </div>
                 </div>
@@ -4580,6 +4819,154 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+      {/* Level Up Confetti Modal */}
+      {showLevelUpModal && (
+        <div className="fixed inset-0 z-[120] bg-black/85 backdrop-blur-sm flex items-center justify-center px-4 animate-fadeIn">
+          {/* Confetti particles */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {Array.from({ length: 30 }).map((_, i) => {
+              const delay = Math.random() * 2;
+              const left = Math.random() * 100;
+              const duration = Math.random() * 3 + 2;
+              const size = Math.random() * 8 + 4;
+              const colors = ["bg-purple-500", "bg-pink-500", "bg-yellow-500", "bg-blue-500", "bg-green-500"];
+              const randColor = colors[Math.floor(Math.random() * colors.length)];
+              return (
+                <div
+                  key={i}
+                  className={`absolute bottom-full ${randColor} rounded-full animate-confetti`}
+                  style={{
+                    left: `${left}%`,
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    animationDelay: `${delay}s`,
+                    animationDuration: `${duration}s`
+                  }}
+                />
+              );
+            })}
+          </div>
+          <div className="glass-card w-full max-w-sm p-8 border-purple-500/30 bg-[#0c0a20] text-center space-y-6 animate-scaleUp relative shadow-[0_0_50px_rgba(168,85,247,0.3)]">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.15)_0%,transparent_70%)] pointer-events-none" />
+            <div className="h-20 w-20 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center mx-auto shadow-lg shadow-purple-500/40 animate-pulse">
+              <Trophy className="h-10 w-10 text-white" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-xl font-black text-white uppercase tracking-wider">LEVEL UP! 🚀</h3>
+              <p className="text-xs text-purple-400 font-extrabold">You have reached Level {currentLevelNum}!</p>
+              <p className="text-[11px] text-gray-400 leading-relaxed px-4">
+                Congratulations! You've generated enough viral hooks and captions to unlock **Social Overlord** privileges. Keep creating!
+              </p>
+            </div>
+            <button
+              onClick={() => setShowLevelUpModal(false)}
+              className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-purple-500/25"
+            >
+              Acknowledge & Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Ctrl + K Command Palette */}
+      {showCommandPalette && (
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-start justify-center pt-24 px-4">
+          <div className="glass-card w-full max-w-lg border-white/10 bg-[#0b081c] shadow-[0_0_40px_rgba(139,92,246,0.2)] overflow-hidden flex flex-col max-h-[450px]">
+            {/* Search Header */}
+            <div className="p-4 border-b border-white/5 flex items-center gap-3">
+              <Search className="h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                autoFocus
+                value={commandSearch}
+                onChange={(e) => setCommandSearch(e.target.value)}
+                placeholder="Search studio tools (e.g. script, calendar, brand)..."
+                className="flex-1 bg-transparent text-sm text-white placeholder-gray-500 focus:outline-none"
+              />
+              <button onClick={() => setShowCommandPalette(false)} className="text-xs text-gray-500 hover:text-white bg-white/5 px-2 py-1 rounded">ESC</button>
+            </div>
+
+            {/* Results list */}
+            <div className="flex-1 overflow-y-auto p-2 space-y-1">
+              {[
+                { name: "Dashboard Overview", category: "Core Studio", tab: "Dashboard", desc: "View studio overview and channel metrics" },
+                { name: "AI Script Generator", category: "Core Studio", tab: "AI Script Generator", desc: "Generate complete scripts for YouTube or Reels" },
+                { name: "Viral Hook Generator", category: "Core Studio", tab: "Viral Hook Generator", desc: "Create high-retention hooks and setups" },
+                { name: "Hashtag Generator", category: "Core Studio", tab: "Hashtag Generator", desc: "Analyze and recommend tags for social systems" },
+                { name: "Caption Generator", category: "Core Studio", tab: "Caption Generator", desc: "Write social captions with platform custom tones" },
+                { name: "Thumbnail Prompts", category: "Core Studio", tab: "Thumbnail Prompts", desc: "Midjourney prompts for click-worthy covers" },
+                { name: "Content Calendar", category: "Core Studio", tab: "Content Calendar", desc: "Plan publication dates and schedules" },
+                { name: "AI Chat Assistant", category: "Core Studio", tab: "AI Chat Assistant", desc: "Ask the creator coach anything" },
+                { name: "AI Faceless Planner", category: "Advanced Tools", tab: "AI Faceless Planner", desc: "Structure video assets and narration vibe" },
+                { name: "AI Voiceover", category: "Advanced Tools", tab: "AI Voiceover", desc: "Convert text to audio using neural models" },
+                { name: "AI Avatar Video", category: "Advanced Tools", tab: "AI Avatar Video", desc: "Render speaking avatars from script text" },
+                { name: "Trend Radar", category: "Advanced Tools", tab: "Trend Radar", desc: "Scan trending audio, topics, and metrics" },
+                { name: "Viral Ideas", category: "Advanced Tools", tab: "Viral Ideas", desc: "Generate unique concept lists for videos" },
+                { name: "SEO Optimizer", category: "Advanced Tools", tab: "SEO Optimizer", desc: "Score title and description keyword weights" },
+                { name: "Screenshot Analyzer", category: "Advanced Tools", tab: "Screenshot Analyzer", desc: "Analyze click curves and thumbnails" },
+                { name: "Auto Research Engine", category: "Advanced Tools", tab: "Auto Research Engine", desc: "Compile statistics and summaries for a topic" },
+                { name: "Smart Workspace", category: "Workspace & Assets", tab: "Smart Workspace", desc: "Manage creator memory and tone profiles" },
+                { name: "Smart Notes", category: "Workspace & Assets", tab: "Smart Notes", desc: "Notepad drafts with automated AI Polish" },
+                { name: "Prompt Library", category: "Workspace & Assets", tab: "Prompt Library", desc: "Ready-to-use search templates for creators" },
+                { name: "File Manager", category: "Workspace & Assets", tab: "File Manager", desc: "Manage files and assets in your cloud space" },
+                { name: "Campaign Builder", category: "Workspace & Assets", tab: "Campaign Builder", desc: "Structure coordinated timelines for sponsorships" },
+                { name: "Brand Kit", category: "Growth & Team", tab: "Brand Kit", desc: "Configure custom colors, fonts, and tone rules" },
+                { name: "Smart Comments", category: "Growth & Team", tab: "Smart Comments", desc: "Auto-reply to viewer comments with custom tones" },
+                { name: "Repurpose Hub", category: "Growth & Team", tab: "Repurpose Hub", desc: "Convert script transcripts into tweets or blog posts" },
+                { name: "CTR Analyzer", category: "Growth & Team", tab: "CTR Analyzer", desc: "Measure thumbnail focus grids and contrast" },
+                { name: "A/B Titles", category: "Growth & Team", tab: "A/B Titles", desc: "Predict click rates for title variations" },
+                { name: "Creator Levels", category: "Growth & Team", tab: "Creator Levels", desc: "Check XP streaks, ranks, and badges" },
+                { name: "Community Feed", category: "Growth & Team", tab: "Community Feed", desc: "View posts shared by other creators in the community" },
+                { name: "Admin Suite", category: "Growth & Team", tab: "Admin Suite", desc: "Check workspace usage metrics and keys status" },
+                { name: "Settings", category: "Growth & Team", tab: "Settings", desc: "Manage account profile details and theme preferences" }
+              ].filter(c =>
+                c.name.toLowerCase().includes(commandSearch.toLowerCase()) ||
+                c.category.toLowerCase().includes(commandSearch.toLowerCase()) ||
+                c.desc.toLowerCase().includes(commandSearch.toLowerCase())
+              ).map((cmd, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setActiveTab(cmd.tab);
+                    setShowCommandPalette(false);
+                    setCommandSearch("");
+                  }}
+                  className="w-full text-left p-3 hover:bg-white/5 rounded-xl border border-transparent hover:border-white/5 flex justify-between items-center transition-all group"
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-white group-hover:text-purple-400 transition-colors">{cmd.name}</span>
+                      <span className="text-[8px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-1.5 py-0.5 rounded font-extrabold uppercase">{cmd.category}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-500 mt-0.5">{cmd.desc}</p>
+                  </div>
+                  <span className="text-[10px] text-gray-600 group-hover:text-gray-400 transition-colors">↳ Go</span>
+                </button>
+              ))}
+              {commandSearch && (
+                <div className="text-center py-6 text-xs text-gray-500 font-semibold">
+                  No matching tools found. Try "script" or "radar".
+                </div>
+              )}
+            </div>
+            <div className="p-3 border-t border-white/5 bg-black/20 flex justify-between text-[9px] text-gray-500 font-bold uppercase tracking-wider">
+              <span>Use shortcuts to navigate</span>
+              <span>Ctrl + K to toggle</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Local keyframe animations */}
+      <style>{`
+        @keyframes confetti {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        .animate-confetti {
+          animation: confetti linear infinite;
+        }
+      `}</style>
     </div>
   );
 }
