@@ -148,170 +148,144 @@ export async function POST(req: Request) {
 }
 
 function getMockResponse(tool: string, params: any) {
-  const topic = params.topic || "AI Tools";
+  // Extract and clean topic
+  let topic = params.topic || "AI Content Creation";
+  topic = topic.trim();
   
+  // Create stylized capitalized version
+  const cleanTitle = topic.split(" ").map((w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+  
+  // Make a list of tags from words in the topic
+  const tagWords = topic.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "")
+    .split(/\s+/)
+    .filter((w: string) => w.length > 2);
+  const customTags = tagWords.map((w: string) => `#${w}`);
+  // Add some fallback popular hashtags
+  while(customTags.length < 5) {
+    const popular = ["#CreatorOS", "#ViralContent", "#AICreator", "#GrowthSecrets", "#SaaSWorkflow"];
+    const nextTag = popular[customTags.length % popular.length];
+    if (!customTags.includes(nextTag)) {
+      customTags.push(nextTag);
+    } else {
+      customTags.push(`#CreatorOS_${customTags.length}`);
+    }
+  }
+
   if (tool === "script") {
-    const isStudent = topic.toLowerCase().includes("student");
     return {
-      hook: isStudent 
-        ? "These 3 AI tools can save students HOURS every day 🤯"
-        : `This secret AI tool will save you hours of manual work every day 🤯`,
-      script: isStudent
-        ? "If you are a student and not using these AI tools yet, you're already behind. First, ChatGPT helps you summarize papers in seconds. Second, Notion AI structures all your study guides. Third, CreatorOS AI organizes your content workflow."
-        : `If you are a content creator and not using these workflows yet, you're already behind. Here is how CreatorOS AI completely automates your scripting and research.`,
-      sceneBreakdown: isStudent
-        ? "0s-15s: Student typing on a laptop with neon glowing dashboard overlay. Text: '3 Tools'.\n15s-45s: Screen recording showing Notion AI and ChatGPT.\n45s-60s: Student smiling and closing the laptop."
-        : "0s-15s: Zoom shot of a neon cyber-punk setup showing graphs going up.\n15s-45s: Fast montage of the AI tools dashboard.\n45s-60s: Outro screen showing CTA and follow buttons.",
-      cta: isStudent
-        ? "Follow for more AI productivity hacks 🚀"
-        : "Sign up free to CreatorOS AI and scale your brand today! 🚀",
-      seoTitle: isStudent
-        ? "Top 3 AI Tools for Students (Save Hours Daily!)"
-        : `How I Automated My Creator Workflow with AI (Full Guide)`,
-      description: isStudent
-        ? "Discover the top 3 AI tools that will save you hours of studying and writing. Perfect for students in 2026."
-        : "Here is the step-by-step guide to automating your content creation pipelines using next-generation AI tools.",
-      hashtags: isStudent
-        ? ["#AI", "#Students", "#Productivity", "#Shorts"]
-        : ["#AI", "#Creator", "#SaaS", "#Workflow", "#Automation"],
-      thumbnailPrompt: isStudent
-        ? "Sleek study desk, glowing holographic screen displaying study templates, cinematic ambient lighting, 8k."
-        : "Shocked creator face, neon workspace background, rising graphs, highly detailed, 8k.",
-      viralScore: isStudent ? 94 : 91
+      hook: `Here is the one secret about ${topic} that will blow your mind... 🤯`,
+      script: `Have you ever wondered why some content about ${topic} gets millions of views, while others get zero? It is all about the hook and pacing. First, you need to capture attention in under 3 seconds by showing a major pain point. Second, structure the content with pattern interrupts every 5 seconds. And third, always deliver a clear call-to-action that encourages comments, which boosts the algorithm.`,
+      sceneBreakdown: `0s-15s: Shocked face overlay with text: 'The ${cleanTitle} Secret'. Fast transition.\n15s-45s: Step-by-step editing checklist highlighting neon visual overlays.\n45s-60s: Outro screen showing CTA and follow buttons with Synthwave grid.`,
+      cta: `Follow for more viral ${topic} growth hacks! 🚀`,
+      seoTitle: `How to Go Viral with ${cleanTitle} (Step-by-Step Guide)`,
+      description: `The complete, step-by-step creator blueprint for automating and optimizing your ${topic} content pipeline.`,
+      hashtags: customTags,
+      thumbnailPrompt: `Close-up shot of a content creator looking shocked at a glowing holographic neon card displaying '${cleanTitle}' templates, cyber-punk studio background, highly detailed, 8k resolution, cinematic lighting.`,
+      viralScore: Math.floor(Math.random() * 10) + 88
     };
   }
-  
+
   if (tool === "hooks") {
-    const isFitness = topic.toLowerCase().includes("fitness") || topic.toLowerCase().includes("motivation");
     return {
-      emotional: isFitness
-        ? "This one fitness habit transformed my body (and saved my mental health) in 30 days..."
-        : `I almost lost my entire channel last week... but this one workflow fixed everything.`,
-      curiosity: isFitness
-        ? "What happens to your muscles if you do 50 pushups every single day? The science might surprise you."
-        : `Most creators make this mistake in the first 5 seconds. Here is what you should do instead.`,
-      shock: isFitness
-        ? "Stop lifting weights. Here is why your 1-hour gym routine is actually slowing your fat loss."
-        : `ChatGPT is actually making your scripts worse. Stop using it directly.`,
-      viral: isFitness
-        ? "I tried the military fitness routine for 7 days... and here is why I almost quit on day 3."
-        : `I copy-pasted this simple hook and it got me 1M views in 24 hours.`
+      emotional: `This one simple habit completely transformed my ${topic} content (and saved my sanity)...`,
+      curiosity: `The absolute worst mistake you can make with ${topic} in 2026. Here is why...`,
+      shock: `Stop uploading ${topic} videos. Do this instead if you actually want to get views.`,
+      viral: `I tried this secret ${topic} workflow for 7 days... and here is why I am never going back.`
     };
   }
-  
+
   if (tool === "hashtags") {
-    const isTravel = topic.toLowerCase().includes("travel") || topic.toLowerCase().includes("vlog");
-    return isTravel ? [
-      { tag: "#travel", trendScore: "+180%", popularity: 95 },
-      { tag: "#travelvlog", trendScore: "+140%", popularity: 88 },
-      { tag: "#explore", trendScore: "+95%", popularity: 82 },
-      { tag: "#wanderlust", trendScore: "+60%", popularity: 75 },
-      { tag: "#viralreels", trendScore: "+210%", popularity: 98 }
-    ] : [
-      { tag: "#AItools", trendScore: "+240%", popularity: 98 },
-      { tag: "#YouTubeTips", trendScore: "+110%", popularity: 84 },
-      { tag: "#ContentCreator", trendScore: "+95%", popularity: 79 },
-      { tag: "#AIAutomation", trendScore: "+180%", popularity: 90 },
-      { tag: "#CreatorTips", trendScore: "+60%", popularity: 68 }
-    ];
+    return customTags.map((tag: string, idx: number) => ({
+      tag,
+      trendScore: `+${Math.floor(Math.random() * 150) + 100}%`,
+      popularity: Math.floor(Math.random() * 20) + 78
+    }));
   }
-  
+
   if (tool === "thumbnail") {
-    const isGaming = topic.toLowerCase().includes("gaming") || topic.toLowerCase().includes("montage");
     return {
-      prompt: isGaming
-        ? "Cinematic gaming thumbnail with neon lighting, intense player expression, dramatic contrast, YouTube viral style, 8k."
-        : "Cinematic close-up of a content creator looking shocked at a glowing neon holographic screen, 8k.",
-      idea: isGaming
-        ? "Uses high contrast neon visual cues to capture attention in the saturated gaming niche."
-        : "Creates curiosity with the shocked expression and implies rapid growth.",
-      ctrScore: isGaming ? "9.4%" : "8.7%"
+      prompt: `Vibrant YouTube thumbnail design for ${cleanTitle}, featuring high-contrast neon lighting, an intensely expressive character face in the center, large bold glowing text, 8k resolution, photorealistic.`,
+      idea: `Uses high contrast neon visual cues to capture attention in the saturated ${topic} niche.`,
+      ctrScore: `${(Math.random() * 3 + 8).toFixed(1)}%`
     };
   }
 
   if (tool === "chat") {
-    const lastMsg = params.messages?.[params.messages.length - 1]?.content || "";
-    if (lastMsg.toLowerCase().includes("reel") || lastMsg.toLowerCase().includes("viral") || lastMsg.toLowerCase().includes("idea")) {
-      return `Here are some trending, viral Reel ideas for your channel:
-      
-1. **POV Transformation Reels**: Share a relatable transition (e.g. "POV: You started using AI to write your content vs doing it manually") using sleek neon cuts.
-2. **AI Editing Hacks**: Walk through a 15-second shortcut (e.g. "How to auto-generate b-roll scripts using CreatorOS AI").
-3. **Before vs After Content**: Show the visual comparison of a raw script/thumbnail draft against the polished final output, revealing the dramatic boost in metrics.`;
-    }
-    return `Hey creator! How can I help you scale your channel today? Ask me about growth strategies, video topics, SEO tags, or channel improvement advice!`;
+    return `Here is a custom growth briefing for **${cleanTitle}**:\n\n1. **Visual Pattern Interrupts**: For ${topic}, ensure you show visual transitions or text cards every 3-5 seconds to maintain high viewer retention.\n2. **Curiosity-Driven Hooking**: Start your videos with a polarizing claim about ${topic} that immediately opens a curiosity loop.\n3. **Call-to-Action Integration**: Encourage users to comment their opinion on ${topic} rather than just asking them to follow. This drives high engagement.`;
   }
 
   if (tool === "caption") {
     return {
-      caption: `Unlocking the future of content generation. 🚀 We spent 48 hours testing the latest AI tool stack and here is exactly how it is going to save you 20+ hours a week. Drop a comment if you want the setup guide! 👇`,
-      hashtags: ["#CreatorOS", "#AICreator", "#SaaS", "#DeveloperTools", "#WorkflowAutomation"]
+      caption: `Unlocking the future of ${cleanTitle}. 🚀 We spent 48 hours testing the latest workflow strategies and here is exactly how it is going to save you hours of work. Let us know in the comments if you want the full template guide! 👇`,
+      hashtags: customTags
     };
   }
 
   if (tool === "faceless") {
     return {
-      concept: "Minimalist dark futuristic tech layout showing clean AI widgets popping up.",
+      concept: `High-retention faceless short video focusing on ${topic} trends.`,
       visualPrompts: [
-        "Photorealistic macro shot of glowing purple neon circuits on a dark metallic board, high detail, 8k.",
-        "Abstract futuristic glass sphere floating over a reflective neon surface, cinematic lighting, purple tint.",
-        "Overhead shot of sleek hands typing on a glowing transparent mechanical keyboard, neon studio lighting."
+        `Photorealistic macro shot of glowing circuits displaying the text '${cleanTitle}' on a dark metallic board, high detail, 8k.`,
+        `Abstract futuristic glass sphere floating over a reflective neon surface representing ${topic} assets, cinematic lighting.`,
+        `Overhead shot of sleek hands typing on a glowing transparent mechanical keyboard, neon studio lighting.`
       ],
       narration: [
-        "If you're not building with AI in 2026, you're building in the past. Here is why.",
-        "Next-gen AI operating systems like CreatorOS can now automate 95% of your creator pipeline.",
-        "The question isn't if you will adapt, but when. Get started free today."
+        `If you are not building content for ${topic} in 2026, you are building in the past.`,
+        `Next-gen automation tools can now completely handle the scripting and research for ${topic}.`,
+        `The question isn't if you will adapt, but when. Get started free today.`
       ],
-      musicVibe: "Deep ambient synthwave track with subtle typing sound effects."
+      musicVibe: "Deep atmospheric synthwave track with subtle typing sound effects."
     };
   }
 
   if (tool === "research") {
     return {
-      summary: "Creator automation is growing at 45% CAGR, with AI script generation being the fastest-adopted workflow.",
+      summary: `Audience search interest in ${topic} is growing at a rapid pace, with mobile search volume increasing by 65% over the last quarter.`,
       stats: [
-        "95% of creators report saving up to 15 hours per week using AI script checkers.",
-        "CTR increases by 18% on average when using descriptive Midjourney prompts for thumbnails.",
-        "Faceless automated channels saw a 140% increase in views in early 2026."
+        `92% of channels covering ${topic} reported a surge in metrics when focusing on curiosity hooks.`,
+        `Average click-through rate increases by 14% when using descriptive neon prompts.`,
+        `Automated faceless playlists saw a 180% view spike in early 2026.`
       ],
       questions: [
-        "Can I automate my faceless channel completely?",
-        "What are the best image models for YouTube thumbnails?",
-        "Is there a limit on free AI generations?"
+        `How do I get started with ${topic}?`,
+        `What are the best frameworks to build ${topic} content?`,
+        `Is there a free generator tool for ${topic}?`
       ],
       angles: [
-        "The Faceless Creator Trend: How to build a 10k subscriber channel anonymously.",
-        "From Idea to Script in 60 seconds: A developer guide to CreatorOS AI.",
-        "AI Thumbnail Prompts vs Manual Design: Which gets higher CTR?"
+        `The ${cleanTitle} Blueprint: How to scale to 10k followers in 30 days.`,
+        `Why traditional methods for ${topic} are failing in 2026.`,
+        `My step-by-step setup to automate my entire ${topic} workflow.`
       ]
     };
   }
 
   if (tool === "campaign") {
     return {
-      name: "CreatorOS AI Launch Campaign",
+      name: `${cleanTitle} Launch Campaign`,
       steps: [
-        { time: "Phase 1: Pre-launch (3 Days Out)", content: "Hook: The ultimate operating system for creators is launching. Sign up now for free access to 35+ tools." },
-        { time: "Phase 2: Launch Day", content: "Hook: We are officially live! Login securely with Google or GitHub, customize your brand kit, and generate viral scripts." },
-        { time: "Phase 3: Post-launch (5 Days In)", content: "Hook: Over 10k scripts have been generated. See what other creators are building in our live Community Feed." }
+        { time: "Phase 1: Pre-launch (3 Days Out)", content: `Teaser: A major breakthrough in ${topic} is coming. Sign up for early access today.` },
+        { time: "Phase 2: Launch Day", content: `Main Post: We are officially live with our complete ${topic} system! Check out the details.` },
+        { time: "Phase 3: Post-launch (5 Days In)", content: `Follow-up: Over 5,000 creators have used the new ${topic} templates. Join them now.` }
       ]
     };
   }
 
   if (tool === "quality") {
     return {
-      readability: 88,
-      clickbaitRisk: "Moderate",
-      hookScore: 94,
+      readability: Math.floor(Math.random() * 15) + 80,
+      clickbaitRisk: "Low",
+      hookScore: Math.floor(Math.random() * 10) + 88,
       warnings: [
-        "Intro is slightly wordy. Consider shortening by 5 words to boost retention.",
-        "The call-to-action is placed late in the outline."
+        `The introduction of ${topic} is slightly wordy. Consider shortening to boost retention.`,
+        `The call-to-action is placed slightly late in the script.`
       ],
       suggestions: [
-        "Use a curiosity gap hook in the first sentence.",
-        "Include more active verbs in the body copy."
+        `Use a curiosity gap hook in the first sentence to hook fans of ${topic}.`,
+        `Include more active action verbs in the body narration.`
       ]
     };
   }
 
-  return { text: "No prompt matched." };
+  return { text: `Mock response for ${tool} on ${topic}.` };
 }
