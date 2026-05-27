@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ViralFlow AI - Creator Automation Platform",
+  title: "CreatorOS AI - Creator Automation Platform",
   description: "AI-powered tool suite for script generation, hooks, hashtags, thumbnail prompts, content planning, and creator productivity.",
 };
 

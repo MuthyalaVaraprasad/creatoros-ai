@@ -18,7 +18,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-creatoros-ai") {
         await sendPasswordResetEmail(auth, email);
       }
       setSubmitted(true);
@@ -45,7 +45,7 @@ export default function ForgotPassword() {
             <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
-            <span className="text-2xl font-bold tracking-tight text-white">ViralFlow <span className="text-purple-400">AI</span></span>
+            <span className="text-2xl font-bold tracking-tight text-white">CreatorOS <span className="text-purple-400">AI</span></span>
           </Link>
           <h2 className="text-xl font-bold text-gray-200 mt-6">Forgot Password</h2>
           <p className="text-xs text-gray-500 mt-1">We'll help you restore access to your account</p>

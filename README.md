@@ -1,6 +1,6 @@
-# ViralFlow AI — Enterprise Creator Automation OS
+# CreatorOS AI — Enterprise Creator Automation OS
 
-ViralFlow AI is an advanced, full-stack AI Creator Automation Platform that helps creators, YouTubers, influencers, and digital marketers automate and supercharge their workflow. Built using modern design frameworks, it feels like a real billion-dollar SaaS product.
+CreatorOS AI is an advanced, full-stack AI Creator Automation Platform that helps creators, YouTubers, influencers, and digital marketers automate and supercharge their workflow. Built using modern design frameworks, it feels like a real billion-dollar SaaS product.
 
 ---
 
@@ -50,7 +50,7 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=1:your_sender_id:web:your_app_id
 ```
 
-> 💡 **Fallback Mode**: If these keys are not set, ViralFlow AI will seamlessly degrade into a fully functional, highly interactive local mock storage mode. This ensures the app is 100% testable immediately without configuring the API keys!
+> 💡 **Fallback Mode**: If these keys are not set, CreatorOS AI will seamlessly degrade into a fully functional, highly interactive local mock storage mode. This ensures the app is 100% testable immediately without configuring the API keys!
 
 ### 3. Run Development Server
 

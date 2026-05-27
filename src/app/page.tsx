@@ -60,7 +60,7 @@ export default function Home() {
       color: "from-cyan-500 to-blue-500",
       preview: {
         title: "Niche: Tech Automation",
-        hook: "#aiediting #creatorspace #viralflow #youtubetips2026",
+        hook: "#aiediting #creatorspace #creatoros #youtubetips2026",
         body: "Recommended: Use 3 broad hashtags and 4 micro-niche hashtags for maximum algorithmic reach."
       }
     }
@@ -68,20 +68,20 @@ export default function Home() {
 
   const faqs = [
     {
-      q: "How does ViralFlow AI generate viral scripts?",
+      q: "How does CreatorOS AI generate viral scripts?",
       a: "Our AI is trained on thousands of viral YouTube videos, TikToks, and Instagram Reels. It analyzes structures, retention hooks, and pacing to write scripts designed for high viewer retention."
     },
     {
       q: "Is there a limit to how many scripts I can generate?",
-      a: "Free users get 5 generations per month. Creator Pro members enjoy unlimited generations, priority access to newer AI models, and custom brand voices."
+      a: "No! CreatorOS AI is 100% free with unlimited script, hook, hashtag, and video idea generations."
     },
     {
       q: "Can I export my content calendar?",
-      a: "Yes! You can export your content schedules to Google Calendar, Notion, or download them as CSV/PDF files directly from the dashboard."
+      a: "Yes! You can export your content schedules to Notion, Google Docs, or download them as text files directly from the dashboard."
     },
     {
       q: "Does this support multi-platform posting?",
-      a: "Currently, ViralFlow AI plans and formats your content specifically for YouTube, Instagram, TikTok, and LinkedIn. Auto-posting integrations are coming soon."
+      a: "Currently, CreatorOS AI plans and formats your content specifically for YouTube, Instagram, TikTok, and LinkedIn. Auto-posting integrations are coming soon."
     }
   ];
 
@@ -101,12 +101,12 @@ export default function Home() {
             <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)]">
               <Sparkles className="h-5 w-5 text-white animate-pulse" />
             </div>
-            <span className="text-xl font-bold tracking-tight text-white">ViralFlow <span className="text-purple-400">AI</span></span>
+            <span className="text-xl font-bold tracking-tight text-white">CreatorOS <span className="text-purple-400">AI</span></span>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
             <a href="#features" className="hover:text-purple-400 transition-colors">Features</a>
-            <a href="#pricing" className="hover:text-purple-400 transition-colors">Pricing</a>
+            <a href="#free-forever" className="hover:text-purple-400 transition-colors">Free Forever</a>
             <a href="#faqs" className="hover:text-purple-400 transition-colors">FAQ</a>
             <Link href="/dashboard" className="hover:text-purple-400 transition-colors">Dashboard Preview</Link>
           </nav>
@@ -129,7 +129,7 @@ export default function Home() {
         {mobileMenuOpen && (
           <div className="md:hidden border-b border-white/5 bg-[#060410]/95 px-6 py-4 flex flex-col gap-4 text-center">
             <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 py-2">Features</a>
-            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 py-2">Pricing</a>
+            <a href="#free-forever" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 py-2">Free Forever</a>
             <a href="#faqs" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 py-2">FAQ</a>
             <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 py-2">Dashboard</Link>
             <div className="h-[1px] bg-white/5 my-2" />
@@ -205,7 +205,7 @@ export default function Home() {
               <div className="h-3 w-3 rounded-full bg-green-500/60" />
             </div>
             <div className="bg-white/5 border border-white/5 text-[10px] md:text-xs text-gray-500 px-3 py-1 rounded-md flex items-center gap-2">
-              <Zap className="h-3 w-3 text-purple-400" /> demo-workspace.viralflow.ai/dashboard
+              <Zap className="h-3 w-3 text-purple-400" /> demo-workspace.creatoros.ai/dashboard
             </div>
             <div className="h-3 w-3" />
           </div>
@@ -319,79 +319,55 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="relative z-10 px-6 max-w-5xl mx-auto pb-32 border-t border-white/5 pt-24">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-gray-400">Scale your channel from a side-project to a full-time business.</p>
+      {/* Free Forever Section */}
+      <section id="free-forever" className="relative z-10 px-6 max-w-5xl mx-auto pb-32 border-t border-white/5 pt-24">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">100% Free Forever</h2>
+          <p className="text-gray-400">Powerful AI tools should be accessible to every single creator, without constraints.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Starter Plan */}
-          <div className="glass-card p-8 border-white/5 flex flex-col justify-between">
-            <div>
-              <h4 className="text-lg font-bold text-white">Starter</h4>
-              <p className="text-gray-500 text-xs mt-1">Perfect for hobbyists.</p>
-              <div className="my-6">
-                <span className="text-4xl font-extrabold text-white">$0</span>
-                <span className="text-gray-400 text-sm font-medium"> / forever</span>
+        <div className="glass-card p-8 md:p-12 border-purple-500/30 bg-gradient-to-tr from-purple-900/10 to-indigo-900/10 shadow-[0_0_50px_rgba(168,85,247,0.15)] flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+          <div className="absolute top-[-50px] right-[-50px] h-[200px] w-[200px] rounded-full bg-pink-500/10 blur-[50px] pointer-events-none"></div>
+          
+          <div className="flex-1 space-y-6">
+            <h3 className="text-2xl md:text-3xl font-black text-white">No Subscriptions. No Limits.</h3>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              CreatorOS AI was built with a simple mission: to give content creators, writers, designers, and marketers free access to state-of-the-art AI content generation features.
+            </p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                  <Check className="h-3.5 w-3.5" />
+                </div>
+                <span className="text-xs font-semibold text-gray-200">Unlimited AI Generations</span>
               </div>
-              <ul className="space-y-3 text-sm text-gray-300">
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> 5 generations / month</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> AI Script Generator basic</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Web-based dashboard</li>
-              </ul>
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                  <Check className="h-3.5 w-3.5" />
+                </div>
+                <span className="text-xs font-semibold text-gray-200">Full Creator Studio Suite</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                  <Check className="h-3.5 w-3.5" />
+                </div>
+                <span className="text-xs font-semibold text-gray-200">No Credit Card Required</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                  <Check className="h-3.5 w-3.5" />
+                </div>
+                <span className="text-xs font-semibold text-gray-200">Real-Time Database Sync</span>
+              </div>
             </div>
-            <Link href="/signup" className="mt-8 block w-full text-center py-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-sm font-bold transition-all">
-              Sign Up Free
-            </Link>
           </div>
 
-          {/* Pro Plan */}
-          <div className="glass-card p-8 border-purple-500/50 bg-purple-900/10 shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col justify-between relative scale-[1.03]">
-            <div className="absolute top-0 right-6 -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-              Most Popular
-            </div>
-            <div>
-              <h4 className="text-lg font-bold text-white">Creator Pro</h4>
-              <p className="text-purple-300 text-xs mt-1">For professional creators.</p>
-              <div className="my-6">
-                <span className="text-4xl font-extrabold text-white">$29</span>
-                <span className="text-gray-400 text-sm font-medium"> / month</span>
-              </div>
-              <ul className="space-y-3 text-sm text-gray-300">
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Unlimited generations</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Advanced Hook/Hashtag tool</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Content Calendar export</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Custom brand voices</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Priority API access (Gemini Pro)</li>
-              </ul>
-            </div>
-            <Link href="/signup" className="mt-8 block w-full text-center py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white rounded-xl text-sm font-bold shadow-lg shadow-purple-600/30 transition-all">
-              Upgrade to Pro
+          <div className="w-full md:w-auto shrink-0 flex flex-col gap-3">
+            <Link href="/signup" className="w-full text-center py-4 px-8 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white rounded-xl text-sm font-bold shadow-lg shadow-purple-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+              Get Started Free Now
             </Link>
-          </div>
-
-          {/* Agency Plan */}
-          <div className="glass-card p-8 border-white/5 flex flex-col justify-between">
-            <div>
-              <h4 className="text-lg font-bold text-white">Agency / Brand</h4>
-              <p className="text-gray-500 text-xs mt-1">For high-growth teams.</p>
-              <div className="my-6">
-                <span className="text-4xl font-extrabold text-white">$99</span>
-                <span className="text-gray-400 text-sm font-medium"> / month</span>
-              </div>
-              <ul className="space-y-3 text-sm text-gray-300">
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Everything in Pro</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> 5 Team Member Seats</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Advanced Analytics suite</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Custom API integrations</li>
-                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> Dedicated Account Manager</li>
-              </ul>
-            </div>
-            <Link href="/signup" className="mt-8 block w-full text-center py-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-sm font-bold transition-all">
-              Contact Sales
-            </Link>
+            <span className="text-center text-[10px] text-gray-500 font-semibold tracking-wide uppercase">Join thousands of creators today</span>
           </div>
         </div>
       </section>
@@ -434,7 +410,7 @@ export default function Home() {
               <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center">
                 <Sparkles className="h-4 w-4 text-white" />
               </div>
-              <span className="text-base font-bold text-white">ViralFlow AI</span>
+              <span className="text-base font-bold text-white">CreatorOS AI</span>
             </div>
             <p className="text-xs text-gray-500 leading-relaxed">
               Empowering the next generation of content creators with state-of-the-art AI.
@@ -446,7 +422,7 @@ export default function Home() {
             <ul className="space-y-2 text-xs text-gray-400">
               <li><Link href="/dashboard" className="hover:text-white">Dashboard</Link></li>
               <li><a href="#features" className="hover:text-white">Features</a></li>
-              <li><a href="#pricing" className="hover:text-white">Pricing</a></li>
+              <li><a href="#free-forever" className="hover:text-white">Free Forever</a></li>
             </ul>
           </div>
 
@@ -468,7 +444,7 @@ export default function Home() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto border-t border-white/5 mt-12 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
-          <p>© {new Date().getFullYear()} ViralFlow AI. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CreatorOS AI. All rights reserved.</p>
           <div className="flex items-center gap-4 mt-4 md:mt-0">
             <span>Powered by Gemini AI</span>
             <span>Vercel Deploy Ready</span>

@@ -92,7 +92,7 @@ export default function Dashboard() {
   const [profileBio, setProfileBio] = useState("AI content creator & developer building next-gen SaaS platforms.");
   const [profileWebsite, setProfileWebsite] = useState("https://github.com/MuthyalaVaraprasad");
   const [profileAvatar, setProfileAvatar] = useState("");
-  const [accountEmail, setAccountEmail] = useState("varaprasad@viralflow.ai");
+  const [accountEmail, setAccountEmail] = useState("varaprasad@creatoros.ai");
   const [accountPassword, setAccountPassword] = useState("••••••••");
   const [enableTwoFactor, setEnableTwoFactor] = useState(false);
   const [showTwoFactorModal, setShowTwoFactorModal] = useState(false);
@@ -122,12 +122,12 @@ export default function Dashboard() {
   const [newKeyName, setNewKeyName] = useState("");
   const [workspaceName, setWorkspaceName] = useState("Muthyala's Hub");
   const [teamMembers, setTeamMembers] = useState<{ email: string; role: string }[]>([
-    { email: "varaprasad@viralflow.ai", role: "Owner" },
+    { email: "varaprasad@creatoros.ai", role: "Owner" },
     { email: "collab_creator@example.com", role: "Editor" }
   ]);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("Editor");
-  const [webhookUrl, setWebhookUrl] = useState("https://api.viralflow.ai/webhooks/receiver");
+  const [webhookUrl, setWebhookUrl] = useState("https://api.creatoros.ai/webhooks/receiver");
   const [shortcuts, setShortcuts] = useState({
     generate: "Ctrl + G",
     openDashboard: "Ctrl + D",
@@ -138,6 +138,104 @@ export default function Dashboard() {
   const [regionTimezone, setRegionTimezone] = useState("UTC+5:30 (Kolkata)");
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const [showDeleteWorkspaceModal, setShowDeleteWorkspaceModal] = useState(false);
+
+  // ==========================================
+  // EXPANDED CO-WORKER OS STATE VARIABLES
+  // ==========================================
+  
+  // Auto-Save notification status
+  const [saveStatus, setSaveStatus] = useState("Saved to Cloud");
+  
+  // AI Caption Generator
+  const [captionTopic, setCaptionTopic] = useState("Unveiling Next.js 16 features");
+  const [captionTone, setCaptionTone] = useState("Hype & Engaging");
+  const [captionPlatform, setCaptionPlatform] = useState("Instagram");
+  const [isGeneratingCaption, setIsGeneratingCaption] = useState(false);
+  const [captionOutput, setCaptionOutput] = useState<{ caption: string; hashtags: string[] }>({
+    caption: "The future is here! Next.js 16 completely redesigns performance grids. 🚀",
+    hashtags: ["#nextjs", "#react", "#webdev", "#coding", "#creatoros"]
+  });
+
+  // AI Faceless Video Planner
+  const [facelessNiche, setFacelessNiche] = useState("Sci-Fi Mystery");
+  const [facelessStyle, setFacelessStyle] = useState("Cinematic Synthwave");
+  const [isGeneratingFaceless, setIsGeneratingFaceless] = useState(false);
+  const [facelessOutput, setFacelessOutput] = useState<any>({
+    concept: "Faceless tech mystery detailing hidden AI developments.",
+    visualPrompts: [
+      "Macro photorealistic shot of circuit boards with neon indicators, 8k.",
+      "Cinematic view of a glowing glass orb floating in dark vacuum."
+    ],
+    narration: [
+      "Deep inside labs, machines are learning to code.",
+      "Are we ready for what comes next?"
+    ],
+    musicVibe: "Deep atmospheric synth beats with sound effect pops."
+  });
+
+  // Screenshot Analyzer
+  const [uploadedScreenshotType, setUploadedScreenshotType] = useState("thumbnail");
+  const [isAnalyzingScreenshot, setIsAnalyzingScreenshot] = useState(false);
+  const [screenshotAnalysis, setScreenshotAnalysis] = useState<any>(null);
+  const [mockScreenshotUploaded, setMockScreenshotUploaded] = useState(false);
+
+  // Auto Research Engine
+  const [researchQuery, setResearchQuery] = useState("AI agent workflows 2026");
+  const [isResearching, setIsResearching] = useState(false);
+  const [researchStep, setResearchStep] = useState("");
+  const [researchBrief, setResearchBrief] = useState<any>(null);
+
+  // Smart Workspace (Memory Config)
+  const [memoryGuidelines, setMemoryGuidelines] = useState("Energetic tone, keep scripts under 120 words, target developers.");
+  const [memoryTargetAudience, setMemoryTargetAudience] = useState("Junior developers, SaaS builders.");
+  const [memoryKeywords, setMemoryKeywords] = useState("coding, saas, react, nextjs, typescript");
+
+  // Smart Notes
+  const [notes, setNotes] = useState<any[]>([
+    { id: 1, title: "Viral Video Hook Ideas", content: "1. The hook that got me 1M views in 24 hours.\n2. Stop writing manual CSS.", lastEdited: "2 Mins Ago" },
+    { id: 2, title: "Sponsor Pitch Draft", content: "Hey team, loving the brand. Let's do a 45s integration read.", lastEdited: "1 Day Ago" }
+  ]);
+  const [selectedNoteId, setSelectedNoteId] = useState(1);
+  const [noteTitleInput, setNoteTitleInput] = useState("Viral Video Hook Ideas");
+  const [noteContentInput, setNoteContentInput] = useState("1. The hook that got me 1M views in 24 hours.\n2. Stop writing manual CSS.");
+
+  // Prompt Library Search
+  const [promptSearch, setPromptSearch] = useState("");
+  const [promptCategory, setPromptCategory] = useState("all");
+
+  // File Manager
+  const [workspaceFiles, setWorkspaceFiles] = useState<any[]>([
+    { name: "viral_reels_script.txt", type: "Script", size: "2.4 KB", date: "May 25, 2026" },
+    { name: "dark_neon_bg.png", type: "Visual", size: "1.2 MB", date: "May 24, 2026" },
+    { name: "intro_narration.mp3", type: "Audio", size: "840 KB", date: "May 22, 2026" }
+  ]);
+
+  // Campaign Builder
+  const [campaignName, setCampaignName] = useState("CreatorOS Launch Day");
+  const [campaignGoal, setCampaignGoal] = useState("Sponsor Integration");
+  const [isBuildingCampaign, setIsBuildingCampaign] = useState(false);
+  const [campaignOutput, setCampaignOutput] = useState<any>(null);
+
+  // Community Feed
+  const [communityPosts, setCommunityPosts] = useState<any[]>([
+    { id: 1, author: "DevDave", handle: "dev_dave", avatar: "D", badge: "Gold Creator", content: "Just generated an entire 30-day coding tutorial schedule using the CreatorOS Content Planner. Cleanest calendar tool I've seen!", likes: 45, liked: false, shares: 12 },
+    { id: 2, author: "AliceTech", handle: "alice_creator", avatar: "A", badge: "Pro Marketer", content: "Used the Midjourney prompt generator tab. Got a shock face thumbnail concept with neon grids that yielded 9.4% CTR! 🔥", likes: 82, liked: true, shares: 24 }
+  ]);
+
+  // Header Notifications Dropdown
+  const [showNotificationsMenu, setShowNotificationsMenu] = useState(false);
+  const [notificationsList, setNotificationsList] = useState<any[]>([
+    { id: 1, title: "Sound #NeonVibe is trending", desc: "Up 120% in tech niche. Use it in Reels Studio.", type: "trend", targetTab: "Trend Radar", unread: true },
+    { id: 2, title: "Analytics weekly report ready", desc: "Your engagement is up 14% this week. Check details.", type: "metric", targetTab: "Dashboard", unread: true }
+  ]);
+
+  // Trigger simulated auto save spinner
+  const triggerAutoSave = () => {
+    setSaveStatus("Saving...");
+    setTimeout(() => {
+      setSaveStatus("Saved to Cloud");
+    }, 800);
+  };
 
   useEffect(() => {
     // Check if user session needs onboarding
@@ -175,7 +273,7 @@ export default function Dashboard() {
   const [scriptOutput, setScriptOutput] = useState({
     hook: "Want to save hours of work as a Creator? 🤯\nThese 5 AI tools will completely change your content game!",
     intro: "Hey creators! In this video, I'll show you 5 powerful AI tools that every YouTuber should be using in 2026 to grow faster, work smarter, and create better content.",
-    body: "[TOOL 1: CHATGPT/CLAUDE]\n- Use it for script writing, video ideas, titles, and more.\n\n[TOOL 2: MIDJOURNEY]\n- Generate gorgeous, high-click-through-rate thumbnails.\n\n[TOOL 3: VIRALFLOW AI]\n- Plan your complete content calendar and schedule posts with custom algorithms.",
+    body: "[TOOL 1: CHATGPT/CLAUDE]\n- Use it for script writing, video ideas, titles, and more.\n\n[TOOL 2: MIDJOURNEY]\n- Generate gorgeous, high-click-through-rate thumbnails.\n\n[TOOL 3: CREATOROS AI]\n- Plan your complete content calendar and schedule posts with custom algorithms.",
     cta: "If you found this helpful, hit subscribe and share this with another creator!"
   });
   const [isGeneratingScript, setIsGeneratingScript] = useState(false);
@@ -394,6 +492,193 @@ export default function Dashboard() {
     showToast("Downloaded text file!");
   };
 
+  // AI Caption Generator Handler
+  const handleGenerateCaption = async () => {
+    setIsGeneratingCaption(true);
+    triggerAutoSave();
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tool: "caption", topic: captionTopic, platform: captionPlatform, keywords: captionTone })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCaptionOutput(data.data);
+        showToast("Caption generated successfully!");
+      }
+    } catch (e) {
+      showToast("Error generating caption");
+    } finally {
+      setIsGeneratingCaption(false);
+    }
+  };
+
+  // AI Faceless Video Planner Handler
+  const handleGenerateFaceless = async () => {
+    setIsGeneratingFaceless(true);
+    triggerAutoSave();
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tool: "faceless", topic: facelessNiche, keywords: facelessStyle })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setFacelessOutput(data.data);
+        showToast("Faceless video plan ready!");
+      }
+    } catch (e) {
+      showToast("Error generating faceless plan");
+    } finally {
+      setIsGeneratingFaceless(false);
+    }
+  };
+
+  // AI Screenshot Analyzer Handler
+  const handleAnalyzeScreenshot = async () => {
+    if (!mockScreenshotUploaded) {
+      showToast("Please drag & drop or upload a screenshot first!");
+      return;
+    }
+    setIsAnalyzingScreenshot(true);
+    try {
+      // Simulate analysis delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      if (uploadedScreenshotType === "thumbnail") {
+        setScreenshotAnalysis({
+          rating: "8.4/10",
+          contrast: "High",
+          vibe: "Tech Cyberpunk",
+          findings: [
+            "Good lighting contrast makes character stand out.",
+            "Face focal area falls perfectly in the left third quadrant.",
+            "Text size is slightly small. Make it 20% larger for mobile readers."
+          ]
+        });
+      } else {
+        setScreenshotAnalysis({
+          rating: "Retention Warning",
+          contrast: "Normal",
+          vibe: "Audience Dropoff",
+          findings: [
+            "Significant dropoff of 35% in the first 5 seconds.",
+            "Pacing drop between intro hook and the first segment.",
+            "Recommendation: Shorten setup and get straight to point in first scene."
+          ]
+        });
+      }
+      showToast("Screenshot analysis complete!");
+    } catch (e) {
+      showToast("Error analyzing screenshot");
+    } finally {
+      setIsAnalyzingScreenshot(false);
+    }
+  };
+
+  // AI Auto Research Engine Handler
+  const handleAutoResearch = async () => {
+    if (!researchQuery.trim()) return;
+    setIsResearching(true);
+    setResearchStep("Initializing query parsing...");
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      setResearchStep("Scanning Google and top YouTube results...");
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setResearchStep("Extracting statistics and Q&A clusters...");
+      
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tool: "research", topic: researchQuery })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setResearchBrief(data.data);
+        showToast("Research briefing compiled!");
+      }
+    } catch (e) {
+      showToast("Error compiling research");
+    } finally {
+      setIsResearching(false);
+      setResearchStep("");
+    }
+  };
+
+  // AI Campaign Builder Handler
+  const handleBuildCampaign = async () => {
+    if (!campaignName.trim()) return;
+    setIsBuildingCampaign(true);
+    triggerAutoSave();
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tool: "campaign", topic: campaignName, keywords: campaignGoal })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCampaignOutput(data.data);
+        showToast("Campaign strategy built!");
+      }
+    } catch (e) {
+      showToast("Error building campaign");
+    } finally {
+      setIsBuildingCampaign(false);
+    }
+  };
+
+  // Notes Management Handlers
+  const handleSaveNote = () => {
+    triggerAutoSave();
+    setNotes(prev =>
+      prev.map(note =>
+        note.id === selectedNoteId
+          ? { ...note, title: noteTitleInput, content: noteContentInput, lastEdited: "Just Now" }
+          : note
+      )
+    );
+    showToast("Notes saved persistently!");
+  };
+
+  const handleAddNewNote = () => {
+    const newId = notes.length > 0 ? Math.max(...notes.map(n => n.id)) + 1 : 1;
+    const newNote = {
+      id: newId,
+      title: "New Note draft",
+      content: "",
+      lastEdited: "Just Now"
+    };
+    setNotes(prev => [newNote, ...prev]);
+    setSelectedNoteId(newId);
+    setNoteTitleInput("New Note draft");
+    setNoteContentInput("");
+    showToast("Added new note page!");
+  };
+
+  const handleAiPolishNote = async () => {
+    if (!noteContentInput.trim()) return;
+    setSaveStatus("Saving...");
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tool: "chat", messages: [{ sender: "user", content: `Please refine and clean up this note draft, keeping the formatting clear and correcting any errors. Keep it brief:\n\n${noteContentInput}` }] })
+      });
+      const data = await res.json();
+      if (data.success) {
+        const textOut = data.data.text || data.data;
+        setNoteContentInput(textOut);
+        showToast("Notes polished by AI!");
+      }
+    } catch (e) {
+      showToast("Error polishing notes");
+    } finally {
+      setSaveStatus("Saved to Cloud");
+    }
+  };
+
   // ==========================================
   // PREMIUM STARTUP FEATURES STATES
   // ==========================================
@@ -401,7 +686,7 @@ export default function Dashboard() {
   // A. AI Avatar Video Generator
   const [selectedAvatar, setSelectedAvatar] = useState("Alex - Tech Pro");
   const [avatarVoice, setAvatarVoice] = useState("US Male - Deep/Professional");
-  const [avatarScript, setAvatarScript] = useState("Welcome to the future of content generation powered by ViralFlow AI. Let's create something amazing.");
+  const [avatarScript, setAvatarScript] = useState("Welcome to the future of content generation powered by CreatorOS AI. Let's create something amazing.");
   const [avatarBackground, setAvatarBackground] = useState("Cyberpunk Studio");
   const [isRenderingAvatar, setIsRenderingAvatar] = useState(false);
   const [avatarRenderProgress, setAvatarRenderProgress] = useState(0);
@@ -604,7 +889,7 @@ export default function Dashboard() {
             {onboardingStep === 1 && (
               <div className="space-y-4">
                 <Sparkles className="h-10 w-10 text-purple-400 mx-auto animate-bounce" />
-                <h3 className="text-base font-bold text-white uppercase tracking-wider">Welcome to ViralFlow AI!</h3>
+                <h3 className="text-base font-bold text-white uppercase tracking-wider">Welcome to CreatorOS AI!</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
                   Let's personalize your dashboard workspace to target your custom audience profiles.
                 </p>
@@ -678,19 +963,20 @@ export default function Dashboard() {
                 <Sparkles className="h-4 w-4 text-white" />
               </div>
               <div>
-                <span className="text-sm font-black text-white tracking-tight">ViralFlow AI</span>
+                <span className="text-sm font-black text-white tracking-tight">CreatorOS AI</span>
                 <p className="text-[9px] text-gray-500 tracking-wider font-semibold">CREATOR OS V2.0</p>
               </div>
             </div>
 
             {/* Sidebar Sections */}
-            <nav className="flex flex-col gap-1">
-              <span className="text-[9px] font-bold text-gray-600 uppercase tracking-wider pl-2 mb-1 block">Core Studio</span>
+            <nav className="flex flex-col gap-1 overflow-y-auto max-h-[70vh] custom-scrollbar pr-1">
+              <span className="text-[9px] font-bold text-purple-400 uppercase tracking-widest pl-2 mb-1 block">Core Studio</span>
               {[
                 { name: "Dashboard", icon: Sliders },
                 { name: "AI Script Generator", icon: Video },
                 { name: "Viral Hook Generator", icon: Sparkle },
                 { name: "Hashtag Generator", icon: Hash },
+                { name: "Caption Generator", icon: FileText },
                 { name: "Thumbnail Prompts", icon: ImageIcon },
                 { name: "Content Calendar", icon: Calendar },
                 { name: "AI Chat Assistant", icon: MessageSquare }
@@ -704,7 +990,7 @@ export default function Dashboard() {
                     className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
                       isSelected
                         ? "bg-purple-600/25 border border-purple-500/30 text-purple-400"
-                        : "hover:bg-white/5 text-gray-400 hover:text-white"
+                        : "hover:bg-white/5 text-gray-400 hover:text-white border border-transparent"
                     }`}
                   >
                     <IconComp className="h-4 w-4" />
@@ -713,16 +999,16 @@ export default function Dashboard() {
                 );
               })}
 
-              <span className="text-[9px] font-bold text-gray-600 uppercase tracking-wider pl-2 mt-4 mb-1 block">Premium Generators</span>
+              <span className="text-[9px] font-bold text-pink-400 uppercase tracking-widest pl-2 mt-4 mb-1 block">Advanced Tools</span>
               {[
-                { name: "AI Avatar Video", icon: Tv },
+                { name: "AI Faceless Planner", icon: Target },
                 { name: "AI Voiceover", icon: Volume2 },
+                { name: "AI Avatar Video", icon: Tv },
                 { name: "Trend Radar", icon: Music },
-                { name: "Viral Ideas", icon: Target },
+                { name: "Viral Ideas", icon: Sparkles },
                 { name: "SEO Optimizer", icon: Search },
-                { name: "Reels Studio", icon: Edit3 },
-                { name: "Social Scheduler", icon: Calendar },
-                { name: "Workflow Builder", icon: Layers }
+                { name: "Screenshot Analyzer", icon: Eye },
+                { name: "Auto Research Engine", icon: BarChart2 }
               ].map((item) => {
                 const IconComp = item.icon;
                 const isSelected = activeTab === item.name;
@@ -733,7 +1019,7 @@ export default function Dashboard() {
                     className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
                       isSelected
                         ? "bg-purple-600/25 border border-purple-500/30 text-purple-400"
-                        : "hover:bg-white/5 text-gray-400 hover:text-white"
+                        : "hover:bg-white/5 text-gray-400 hover:text-white border border-transparent"
                     }`}
                   >
                     <IconComp className="h-4 w-4" />
@@ -742,7 +1028,34 @@ export default function Dashboard() {
                 );
               })}
 
-              <span className="text-[9px] font-bold text-gray-600 uppercase tracking-wider pl-2 mt-4 mb-1 block">Management & Growth</span>
+              <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-widest pl-2 mt-4 mb-1 block">Workspace & Assets</span>
+              {[
+                { name: "Smart Workspace", icon: Sliders },
+                { name: "Smart Notes", icon: Edit3 },
+                { name: "Prompt Library", icon: FolderOpen },
+                { name: "File Manager", icon: FolderOpen },
+                { name: "Workflow Builder", icon: Layers },
+                { name: "Campaign Builder", icon: Target }
+              ].map((item) => {
+                const IconComp = item.icon;
+                const isSelected = activeTab === item.name;
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => setActiveTab(item.name)}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
+                      isSelected
+                        ? "bg-purple-600/25 border border-purple-500/30 text-purple-400"
+                        : "hover:bg-white/5 text-gray-400 hover:text-white border border-transparent"
+                    }`}
+                  >
+                    <IconComp className="h-4 w-4" />
+                    {item.name}
+                  </button>
+                );
+              })}
+
+              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest pl-2 mt-4 mb-1 block">Growth & Team</span>
               {[
                 { name: "Brand Kit", icon: Shield },
                 { name: "Smart Comments", icon: MessageSquare },
@@ -750,7 +1063,7 @@ export default function Dashboard() {
                 { name: "CTR Analyzer", icon: Eye },
                 { name: "A/B Titles", icon: Edit3 },
                 { name: "Creator Levels", icon: Trophy },
-                { name: "Billing & Pro", icon: CreditCard },
+                { name: "Community Feed", icon: Users },
                 { name: "Admin Suite", icon: Users },
                 { name: "Settings", icon: Settings }
               ].map((item) => {
@@ -763,7 +1076,7 @@ export default function Dashboard() {
                     className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
                       isSelected
                         ? "bg-purple-600/25 border border-purple-500/30 text-purple-400"
-                        : "hover:bg-white/5 text-gray-400 hover:text-white"
+                        : "hover:bg-white/5 text-gray-400 hover:text-white border border-transparent"
                     }`}
                   >
                     <IconComp className="h-4 w-4" />
@@ -1309,7 +1622,7 @@ export default function Dashboard() {
                             : "bg-purple-600/25 border-purple-500/30 text-purple-400"
                         }`}>
                           <span className="text-[9px] text-gray-500 font-bold block mb-1 uppercase">
-                            {isAi ? "ViralFlow Assistant" : "You"}
+                            {isAi ? "CreatorOS Assistant" : "You"}
                           </span>
                           <p className="whitespace-pre-line">{msg.content}</p>
                         </div>
@@ -1319,7 +1632,7 @@ export default function Dashboard() {
                   {isAiTyping && (
                     <div className="flex justify-start">
                       <div className="p-3 bg-white/5 border border-white/5 rounded-2xl text-xs text-purple-400 font-bold animate-pulse">
-                        ViralFlow is thinking...
+                        CreatorOS is thinking...
                       </div>
                     </div>
                   )}
@@ -2012,6 +2325,46 @@ export default function Dashboard() {
                   Back to Dashboard
                 </button>
               </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 h-fit">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Source Text / Link</label>
+                    <textarea
+                      rows={5}
+                      placeholder="Paste your script, text draft, or blog article copy here..."
+                      className="w-full p-3 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Target Format</label>
+                    <select className="w-full p-2.5 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none">
+                      <option value="twitter">Twitter / X Thread</option>
+                      <option value="linkedin">LinkedIn Professional Post</option>
+                      <option value="reels">TikTok / Shorts Voiceover script</option>
+                    </select>
+                  </div>
+                  <button onClick={() => { triggerAutoSave(); showToast("Repurposing draft with AI..."); }} className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors">
+                    Convert Format
+                  </button>
+                </div>
+
+                <div className="md:col-span-2 glass-card p-6 border-white/5 space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                    <span className="text-xs font-bold text-white uppercase tracking-wider">Repurposed Output</span>
+                    <button onClick={() => copyToClipboard("1/ 🚀 Unlocking next-gen developer productivity with CreatorOS AI...")} className="text-xs text-purple-400 hover:text-purple-300">
+                      Copy Text
+                    </button>
+                  </div>
+                  <div className="bg-white/5 p-4 rounded-xl text-xs text-gray-300 whitespace-pre-line leading-relaxed font-mono min-h-[200px]">
+                    {`1/ 🚀 Unlocking next-gen developer productivity with CreatorOS AI. 
+
+2/ We built a complete operating system stack that automates script writing, visual prompt crafting, calendar blocks, and growth tracking in one hub.
+
+3/ Ready to scale? Login with Google/GitHub, customize your Brand Kit, and let AI handle the heavy lifting. 100% Free forever. Try it at creatoros.ai/dashboard!`}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -2028,6 +2381,58 @@ export default function Dashboard() {
                 <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
                   Back to Dashboard
                 </button>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="glass-card p-6 border-white/5 flex flex-col justify-center items-center text-center space-y-4 min-h-[300px]">
+                  <div className="h-16 w-16 rounded-full bg-purple-600/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                    <ImageIcon className="h-8 w-8" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">Upload Thumbnail Image</h4>
+                    <p className="text-xs text-gray-500 mt-1">Drag & drop your thumbnail file or click to browse (PNG, JPG)</p>
+                  </div>
+                  <button onClick={() => { setMockScreenshotUploaded(true); showToast("Mock thumbnail uploaded!"); }} className="px-4 py-2 bg-white/5 hover:bg-white/10 text-xs font-bold rounded-xl border border-white/5 text-white transition-colors">
+                    Select File
+                  </button>
+                </div>
+
+                <div className="glass-card p-6 border-white/5 space-y-6">
+                  <div>
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">Simulated CTR Metrics</h3>
+                    <p className="text-[10px] text-gray-500 mt-0.5">Forecast analytics compiled from historical viral thumbnails in your niche.</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center text-xs font-semibold">
+                      <span className="text-gray-400">Contrast Assessment</span>
+                      <span className="text-emerald-400">Excellent (92%)</span>
+                    </div>
+                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                      <div className="bg-emerald-500 h-full w-[92%]" />
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs font-semibold">
+                      <span className="text-gray-400">Face Focal Focus</span>
+                      <span className="text-purple-400">Strong (85%)</span>
+                    </div>
+                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                      <div className="bg-purple-500 h-full w-[85%]" />
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs font-semibold">
+                      <span className="text-gray-400">Text Readability</span>
+                      <span className="text-amber-400">Moderate (60%)</span>
+                    </div>
+                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                      <div className="bg-amber-500 h-full w-[60%]" />
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-xl text-xs text-purple-300 leading-relaxed">
+                    💡 **Recommendation**: Increase text shadow depth and enlarge fonts by 15% to ensure thumbnails look readable on small mobile device viewports.
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -2046,6 +2451,61 @@ export default function Dashboard() {
                   Back to Dashboard
                 </button>
               </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 h-fit">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Title Option A</label>
+                    <input
+                      type="text"
+                      value={abTitleA}
+                      onChange={(e) => setAbTitleA(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Title Option B</label>
+                    <input
+                      type="text"
+                      value={abTitleB}
+                      onChange={(e) => setAbTitleB(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+                  <button onClick={() => { triggerAutoSave(); showToast("Predicting winner title..."); }} className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors">
+                    Analyze CTR Weights
+                  </button>
+                </div>
+
+                <div className="md:col-span-2 glass-card p-6 border-white/5 space-y-6">
+                  <div className="border-b border-white/5 pb-3">
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">A/B Testing Prediction Engine</h3>
+                  </div>
+
+                  <div className="flex items-center gap-6">
+                    <div className="h-20 w-20 rounded-full border-4 border-emerald-500 flex items-center justify-center text-emerald-400 font-mono text-lg font-black bg-emerald-500/10 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                      89%
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white">Title Option B Predicted Winner!</h4>
+                      <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                        Option B has high semantic search relevance. Curiosity triggers ("10 Mins") perform 30% better than general hooks ("I Automated") in the Tech category.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                    <div className="p-4 bg-white/5 rounded-xl border border-white/5">
+                      <span className="text-[10px] font-bold text-gray-500 uppercase">Option A Score</span>
+                      <p className="text-xl font-bold text-white mt-1">62/100</p>
+                    </div>
+                    <div className="p-4 bg-purple-600/10 rounded-xl border border-purple-500/20">
+                      <span className="text-[10px] font-bold text-purple-400 uppercase">Option B Score</span>
+                      <p className="text-xl font-bold text-purple-300 mt-1">89/100</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -2053,7 +2513,7 @@ export default function Dashboard() {
           {/* TAB: CREATOR LEVELS (GAMIFICATION) */}
           {/* ========================================== */}
           {activeTab === "Creator Levels" && (
-            <div className="p-6 max-w-3xl mx-auto space-y-6">
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold text-white">Creator Gamification Dashboard</h2>
@@ -2063,39 +2523,841 @@ export default function Dashboard() {
                   Back to Dashboard
                 </button>
               </div>
-            </div>
-          )}
 
-          {/* ========================================== */}
-          {/* TAB: BILLING & PRO */}
-          {/* ========================================== */}
-          {activeTab === "Billing & Pro" && (
-            <div className="p-6 max-w-4xl mx-auto space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-bold text-white">Subscription & Billing Suite</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">Configure payment structures, billing cycles, or upgrade plans.</p>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-6 border-white/5 space-y-4 text-center flex flex-col items-center justify-center">
+                  <div className="h-20 w-20 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white text-3xl font-extrabold shadow-lg shadow-purple-500/20 animate-pulse">
+                    14
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white mt-2">{creatorLevel}</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">Progression: {creatorXp} / 10,000 XP</p>
+                  </div>
+                  <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-full w-[74.5%]" />
+                  </div>
                 </div>
-                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
-                  Back to Dashboard
-                </button>
+
+                <div className="md:col-span-2 glass-card p-6 border-white/5 space-y-4">
+                  <span className="text-xs font-bold text-white uppercase tracking-wider block">Achievements Checklist</span>
+                  <div className="space-y-3">
+                    {[
+                      { name: "Viral Masterpiece", desc: "Generate 10 scripts in the studio", done: true },
+                      { name: "Consistency King", desc: "Maintain a 10 day generation streak", done: true },
+                      { name: "Global Reach", desc: "Plan calendar slots on 3 platform niches", done: false },
+                      { name: "AI Power User", desc: "Integrate custom brand persona voice profiles", done: false }
+                    ].map((ach, idx) => (
+                      <div key={idx} className="flex justify-between items-center text-xs border-b border-white/5 pb-2">
+                        <div>
+                          <p className={`font-semibold ${ach.done ? "text-white" : "text-gray-500"}`}>{ach.name}</p>
+                          <p className="text-[10px] text-gray-500 mt-0.5">{ach.desc}</p>
+                        </div>
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${
+                          ach.done 
+                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
+                            : "bg-white/5 text-gray-500 border border-white/5"
+                        }`}>
+                          {ach.done ? "Unlocked" : "Locked"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
           {/* ========================================== */}
-          {/* TAB: ADMIN SUITE */}
+          {/* TAB: CAPTION GENERATOR */}
           {/* ========================================== */}
-          {activeTab === "Admin Suite" && (
+          {activeTab === "Caption Generator" && (
             <div className="p-6 max-w-4xl mx-auto space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white">System Admin Control Room</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">Control live API nodes, user allocations, database connections, and MRR metrics.</p>
+                  <h2 className="text-xl font-bold text-white">AI Caption Generator</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Generate high-retention short scripts and interactive caption outlines.</p>
                 </div>
                 <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
                   Back to Dashboard
                 </button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 h-fit">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Video / Post Topic</label>
+                    <input
+                      type="text"
+                      value={captionTopic}
+                      onChange={(e) => setCaptionTopic(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Platform Niche</label>
+                    <select
+                      value={captionPlatform}
+                      onChange={(e) => setCaptionPlatform(e.target.value)}
+                      className="w-full p-2.5 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    >
+                      <option value="Instagram">Instagram Reels</option>
+                      <option value="TikTok">TikTok Short</option>
+                      <option value="LinkedIn">LinkedIn Post</option>
+                      <option value="YouTube">YouTube Description</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Tone Style</label>
+                    <select
+                      value={captionTone}
+                      onChange={(e) => setCaptionTone(e.target.value)}
+                      className="w-full p-2.5 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    >
+                      <option value="Hype & Engaging">Hype & Engaging</option>
+                      <option value="Informative & Clean">Informative & Clean</option>
+                      <option value="Mysterious & Curious">Mysterious & Curious</option>
+                      <option value="Professional & Bold">Professional & Bold</option>
+                    </select>
+                  </div>
+
+                  <button
+                    onClick={handleGenerateCaption}
+                    disabled={isGeneratingCaption}
+                    className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                  >
+                    {isGeneratingCaption ? "Generating Caption..." : "Generate Caption"}
+                  </button>
+                </div>
+
+                <div className="md:col-span-2 glass-card p-6 border-white/5 space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                    <span className="text-xs font-bold text-white uppercase tracking-wider">AI Generated Caption</span>
+                    <button onClick={() => copyToClipboard(captionOutput.caption + "\n" + captionOutput.hashtags.join(" "))} className="text-xs text-purple-400 hover:text-purple-300">
+                      Copy Caption
+                    </button>
+                  </div>
+
+                  <div className="bg-white/5 p-4 rounded-xl text-xs text-gray-300 whitespace-pre-line leading-relaxed min-h-[150px] font-mono">
+                    {captionOutput.caption}
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {captionOutput.hashtags.map((tag, i) => (
+                      <span key={i} className="px-2.5 py-1 bg-purple-600/10 border border-purple-500/20 text-purple-300 rounded-lg text-[10px] font-semibold">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: AI FACELESS PLANNER */}
+          {/* ========================================== */}
+          {activeTab === "AI Faceless Planner" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">AI Faceless Video Planner</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Plan aesthetic scenes, narration prompts, and audio kits for automated channels.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 h-fit">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Channel Niche</label>
+                    <input
+                      type="text"
+                      value={facelessNiche}
+                      onChange={(e) => setFacelessNiche(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Visual Theme Vibe</label>
+                    <input
+                      type="text"
+                      value={facelessStyle}
+                      onChange={(e) => setFacelessStyle(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleGenerateFaceless}
+                    disabled={isGeneratingFaceless}
+                    className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                  >
+                    {isGeneratingFaceless ? "Planning Scene Boards..." : "Generate Faceless Script"}
+                  </button>
+                </div>
+
+                <div className="md:col-span-2 space-y-6">
+                  <div className="glass-card p-6 border-white/5 space-y-4">
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">Scene & Narration Plan</h3>
+                    
+                    <div className="space-y-4">
+                      {facelessOutput.narration.map((narr: string, index: number) => (
+                        <div key={index} className="p-3 bg-white/5 border border-white/5 rounded-xl text-xs space-y-2">
+                          <div className="flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase">
+                            <span>Scene {index + 1} Visual Prompt</span>
+                            <span className="text-purple-400 cursor-pointer" onClick={() => copyToClipboard(facelessOutput.visualPrompts[index])}>Copy prompt</span>
+                          </div>
+                          <p className="text-gray-400 italic text-[11px]">"{facelessOutput.visualPrompts[index]}"</p>
+                          <p className="font-mono text-purple-300 font-semibold mt-1">Voiceover: {narr}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="glass-card p-4 border-white/5 flex justify-between items-center text-xs">
+                    <div>
+                      <span className="text-[10px] text-gray-500 uppercase font-bold block">Background Audio Recommendation</span>
+                      <p className="text-white font-semibold mt-0.5">{facelessOutput.musicVibe}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: SCREENSHOT ANALYZER */}
+          {/* ========================================== */}
+          {activeTab === "Screenshot Analyzer" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">AI Screenshot Analyzer</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Upload click-through graphs or thumbnail drafts to get structural performance warnings.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 h-fit">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Screenshot Category</label>
+                    <select
+                      value={uploadedScreenshotType}
+                      onChange={(e) => setUploadedScreenshotType(e.target.value)}
+                      className="w-full p-2.5 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    >
+                      <option value="thumbnail">Thumbnail Draft</option>
+                      <option value="retention">Audience Retention Graph</option>
+                      <option value="stats">Analytics Metrics Dashboard</option>
+                    </select>
+                  </div>
+
+                  <div className="p-8 bg-white/5 border border-dashed border-white/10 rounded-xl text-center space-y-3">
+                    <div className="h-10 w-10 bg-purple-600/10 rounded-full flex items-center justify-center text-purple-400 mx-auto">
+                      <ImageIcon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-gray-400 font-bold uppercase">Drag screenshot here</p>
+                      <p className="text-[9px] text-gray-600 mt-0.5">PNG or JPG up to 5MB</p>
+                    </div>
+                    <button onClick={() => { setMockScreenshotUploaded(true); showToast("Mock screenshot uploaded successfully!"); }} className="px-3 py-1.5 bg-purple-600/10 border border-purple-500/20 text-purple-400 rounded-lg text-[9px] font-bold">
+                      Upload Mock File
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={handleAnalyzeScreenshot}
+                    disabled={isAnalyzingScreenshot}
+                    className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                  >
+                    {isAnalyzingScreenshot ? "Analyzing Pixel Elements..." : "Run Analysis"}
+                  </button>
+                </div>
+
+                <div className="md:col-span-2 glass-card p-6 border-white/5 space-y-6">
+                  {screenshotAnalysis ? (
+                    <>
+                      <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                        <span className="text-xs font-bold text-white uppercase tracking-wider">Analysis Report</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] text-gray-500 font-bold uppercase">Predicted Score:</span>
+                          <span className="px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded font-mono text-[10px] font-bold">{screenshotAnalysis.rating}</span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-xs">
+                          <span className="text-[10px] text-gray-500 font-bold uppercase block">Contrast Score</span>
+                          <p className="text-white font-bold mt-0.5">{screenshotAnalysis.contrast}</p>
+                        </div>
+                        <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-xs">
+                          <span className="text-[10px] text-gray-500 font-bold uppercase block">Visual Theme</span>
+                          <p className="text-white font-bold mt-0.5">{screenshotAnalysis.vibe}</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase block">Critiques & Fixes</span>
+                        {screenshotAnalysis.findings.map((item: string, i: number) => (
+                          <div key={i} className="flex gap-2.5 text-xs text-gray-300">
+                            <span className="text-purple-400 font-bold">•</span>
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-center h-48 space-y-2">
+                      <Eye className="h-8 w-8 text-gray-600" />
+                      <p className="text-xs text-gray-500">Upload a screenshot and click "Run Analysis" to get feedback details.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: AUTO RESEARCH ENGINE */}
+          {/* ========================================== */}
+          {activeTab === "Auto Research Engine" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">AI Auto Research Engine</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Scrape search queries, audience questions, and compile content briefs automatically.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 h-fit">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Research Topic</label>
+                    <input
+                      type="text"
+                      value={researchQuery}
+                      onChange={(e) => setResearchQuery(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleAutoResearch}
+                    disabled={isResearching}
+                    className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                  >
+                    {isResearching ? "Scraping Data..." : "Run Research Engine"}
+                  </button>
+
+                  {isResearching && (
+                    <div className="space-y-2 animate-pulse">
+                      <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                        <div className="bg-purple-500 h-full w-[45%]" />
+                      </div>
+                      <p className="text-[10px] text-purple-400 font-bold uppercase">{researchStep}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="md:col-span-2 glass-card p-6 border-white/5 space-y-6">
+                  {researchBrief ? (
+                    <>
+                      <div className="border-b border-white/5 pb-3">
+                        <h3 className="text-xs font-bold text-white uppercase tracking-wider">Research Summary</h3>
+                        <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">{researchBrief.summary}</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase block">Key Statistics & Trends</span>
+                        {researchBrief.stats.map((stat: string, i: number) => (
+                          <div key={i} className="flex gap-2.5 text-xs text-gray-300">
+                            <span className="text-emerald-400 font-bold">✓</span>
+                            <span>{stat}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="space-y-3">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase block">What Audience Asks</span>
+                        {researchBrief.questions.map((q: string, i: number) => (
+                          <div key={i} className="flex gap-2.5 text-xs text-gray-300 italic">
+                            <span className="text-purple-400">?</span>
+                            <span>"{q}"</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="space-y-3">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase block">Content Angles to Target</span>
+                        {researchBrief.angles.map((ang: string, i: number) => (
+                          <div key={i} className="flex gap-2.5 text-xs text-gray-300">
+                            <span className="text-pink-400 font-bold">#</span>
+                            <span>{ang}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-center h-64 space-y-2">
+                      <Search className="h-8 w-8 text-gray-600" />
+                      <p className="text-xs text-gray-500">Provide a research topic and compile data matrices.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: SMART WORKSPACE (CREATOR MEMORY) */}
+          {/* ========================================== */}
+          {activeTab === "Smart Workspace" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Smart Workspace Console</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Configure target demographics, creator memory parameters, and workspace goals.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 md:col-span-2">
+                  <div className="border-b border-white/5 pb-3">
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">Creator AI Memory Bank</h3>
+                    <p className="text-[10px] text-gray-500 mt-0.5">Parameters stored here are injected into prompts during script/hook generations.</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Brand Guidelines</label>
+                      <textarea
+                        rows={3}
+                        value={memoryGuidelines}
+                        onChange={(e) => { setMemoryGuidelines(e.target.value); triggerAutoSave(); }}
+                        className="w-full p-3 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Target Demographics</label>
+                      <input
+                        type="text"
+                        value={memoryTargetAudience}
+                        onChange={(e) => { setMemoryTargetAudience(e.target.value); triggerAutoSave(); }}
+                        className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Niche Keywords</label>
+                      <input
+                        type="text"
+                        value={memoryKeywords}
+                        onChange={(e) => { setMemoryKeywords(e.target.value); triggerAutoSave(); }}
+                        className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-[9px] text-gray-500 font-mono">Changes save automatically ({saveStatus})</span>
+                    <button onClick={() => showToast("Memory synced successfully!")} className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors">
+                      Sync Guidelines
+                    </button>
+                  </div>
+                </div>
+
+                <div className="glass-card p-5 border-white/5 space-y-6">
+                  <div>
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">Workspace Disk Allocation</h3>
+                    <p className="text-[10px] text-gray-500 mt-0.5">Asset limits and workspace usage parameters.</p>
+                  </div>
+
+                  <div className="space-y-4 text-xs">
+                    <div className="flex justify-between font-semibold">
+                      <span className="text-gray-400">Total Scripts</span>
+                      <span className="text-white">12 / 100</span>
+                    </div>
+                    <div className="flex justify-between font-semibold">
+                      <span className="text-gray-400">Memory Slots</span>
+                      <span className="text-purple-400">3 Active</span>
+                    </div>
+                    <div className="flex justify-between font-semibold">
+                      <span className="text-gray-400">Database Rules</span>
+                      <span className="text-emerald-400">Live Sync</span>
+                    </div>
+                  </div>
+
+                  <button onClick={() => showToast("Workspace cache cleared")} className="w-full py-2 bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-bold rounded-xl border border-white/5">
+                    Clear Workspace Cache
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: SMART NOTES */}
+          {/* ========================================== */}
+          {activeTab === "Smart Notes" && (
+            <div className="p-6 max-w-5xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Smart Notes Notepad</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Jot down script concepts, outline lists, and polish them using AI formatter tools.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-4 gap-6">
+                {/* Notes list inner panel */}
+                <div className="glass-card p-4 border-white/5 space-y-4 md:col-span-1 h-[450px] overflow-y-auto custom-scrollbar flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-gray-500 uppercase">My Draft Notes</span>
+                      <button onClick={handleAddNewNote} className="p-1 rounded bg-white/5 hover:bg-white/10 text-purple-400">
+                        <Plus className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {notes.map(note => (
+                        <button
+                          key={note.id}
+                          onClick={() => {
+                            setSelectedNoteId(note.id);
+                            setNoteTitleInput(note.title);
+                            setNoteContentInput(note.content);
+                          }}
+                          className={`w-full p-2.5 rounded-lg text-left text-xs border transition-all ${
+                            note.id === selectedNoteId
+                              ? "bg-purple-600/10 border-purple-500/30 text-purple-300"
+                              : "bg-white/5 border-transparent text-gray-400 hover:text-white"
+                          }`}
+                        >
+                          <span className="font-semibold block truncate">{note.title || "Untitled draft"}</span>
+                          <span className="text-[9px] text-gray-600 block mt-1">{note.lastEdited}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Edit text area inner panel */}
+                <div className="md:col-span-3 glass-card p-6 border-white/5 space-y-4 h-[450px] flex flex-col justify-between">
+                  <div className="space-y-4 flex-1 flex flex-col">
+                    <div className="flex gap-4">
+                      <div className="flex-1 space-y-1">
+                        <label className="text-[10px] text-gray-500 font-bold uppercase">Note Title</label>
+                        <input
+                          type="text"
+                          value={noteTitleInput}
+                          onChange={(e) => { setNoteTitleInput(e.target.value); triggerAutoSave(); }}
+                          className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex-1 flex flex-col space-y-1">
+                      <label className="text-[10px] text-gray-500 font-bold uppercase">Note Content</label>
+                      <textarea
+                        value={noteContentInput}
+                        onChange={(e) => { setNoteContentInput(e.target.value); triggerAutoSave(); }}
+                        className="w-full flex-1 p-3.5 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none resize-none"
+                        placeholder="Draft your thoughts..."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center pt-4 border-t border-white/5">
+                    <div className="flex gap-2">
+                      <button onClick={handleAiPolishNote} className="px-3.5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors">
+                        AI Polish Note
+                      </button>
+                      <button onClick={() => showToast("Note formatted to checklist!")} className="px-3 py-2 bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-bold rounded-xl border border-white/5 transition-colors">
+                        Checklist Format
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] text-gray-600 font-mono">{saveStatus}</span>
+                      <button onClick={handleSaveNote} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-colors">
+                        Save Note
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: PROMPT LIBRARY */}
+          {/* ========================================== */}
+          {activeTab === "Prompt Library" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">AI Prompt Library</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Explore ready-to-copy prompts optimized for Midjourney, ChatGPT, and Canva.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              {/* Filters */}
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <input
+                  type="text"
+                  placeholder="Search prompts (e.g. cinematic, hook)..."
+                  value={promptSearch}
+                  onChange={(e) => setPromptSearch(e.target.value)}
+                  className="w-full sm:w-72 px-3.5 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                />
+                <div className="flex gap-2 w-full sm:w-auto overflow-x-auto">
+                  {["all", "visuals", "scripts", "seo"].map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setPromptCategory(cat)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-colors ${
+                        promptCategory === cat
+                          ? "bg-purple-600 text-white"
+                          : "bg-white/5 hover:bg-white/10 text-gray-400"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Grid lists */}
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { title: "Midjourney Shocked Face CTR Thumbnail", cat: "visuals", prompt: "Shocked YouTuber face with neon light projections, dark futuristic cyberpunk backdrop, highly detailed, 8k resolution, dramatic shadows --ar 16:9" },
+                  { title: "Curiosity Loop TikTok Script Hook", cat: "scripts", prompt: "Write a 3-sentence script hook leveraging a curiosity gap regarding [TOPIC], starting with: 'I tried 50 tools and...'" },
+                  { title: "YouTube SEO Metadata Optimizing Description", cat: "seo", prompt: "Analyze the title '[TITLE]' and keywords '[KEYWORDS]' to compile a description block including a 2-sentence summary, 3 bulleted key value propositions, and 5 hashtags." },
+                  { title: "Cinematic Aesthetic Background Slide", cat: "visuals", prompt: "Futuristic workspace with glowing translucent screens, plants in neon jars, sunset shadows, photorealistic details --ar 9:16" }
+                ].filter(p => (promptCategory === "all" || p.cat === promptCategory) && (p.title.toLowerCase().includes(promptSearch.toLowerCase()) || p.prompt.toLowerCase().includes(promptSearch.toLowerCase()))).map((p, idx) => (
+                  <div key={idx} className="glass-card p-5 border-white/5 space-y-3 flex flex-col justify-between">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-bold text-purple-400 uppercase tracking-wider">{p.cat}</span>
+                      <h4 className="text-xs font-bold text-white">{p.title}</h4>
+                      <p className="text-[11px] text-gray-400 font-mono italic leading-relaxed pt-1 select-all">"{p.prompt}"</p>
+                    </div>
+                    <div className="flex justify-end pt-2">
+                      <button onClick={() => copyToClipboard(p.prompt)} className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-[10px] text-purple-400 font-bold border border-purple-500/20 rounded-lg transition-all">
+                        Copy Prompt
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: FILE MANAGER */}
+          {/* ========================================== */}
+          {activeTab === "File Manager" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">AI File Explorer</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Scan generated script documents, visual prompts, and neural voice recordings.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="glass-card border-white/5 overflow-hidden">
+                <div className="p-4 bg-white/[0.01] border-b border-white/5 flex justify-between items-center text-xs font-bold uppercase text-gray-500">
+                  <span>Name Details</span>
+                  <div className="flex gap-16 pr-8">
+                    <span>Category</span>
+                    <span>Size</span>
+                    <span>Date</span>
+                  </div>
+                </div>
+
+                <div className="divide-y divide-white/5">
+                  {workspaceFiles.map((file, i) => (
+                    <div key={i} className="p-4 hover:bg-white/5 flex justify-between items-center text-xs font-semibold text-white transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FolderOpen className="h-4 w-4 text-purple-400" />
+                        <span>{file.name}</span>
+                      </div>
+                      <div className="flex items-center gap-10">
+                        <span className="px-2 py-0.5 bg-white/5 border border-white/5 rounded text-[9px] uppercase tracking-wider text-gray-400">{file.type}</span>
+                        <span className="w-12 text-right text-gray-500">{file.size}</span>
+                        <span className="w-20 text-right text-gray-500">{file.date}</span>
+                        <button onClick={() => {
+                          setWorkspaceFiles(prev => prev.filter(f => f.name !== file.name));
+                          showToast(`Deleted ${file.name}`);
+                        }} className="p-1 hover:text-red-400 text-gray-600 transition-colors">✕</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: CAMPAIGN BUILDER */}
+          {/* ========================================== */}
+          {activeTab === "Campaign Builder" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">AI Sponsor Campaign Builder</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Build promotional structures, launch captions, and script reads for sponsors.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="glass-card p-5 border-white/5 space-y-4 h-fit">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Campaign Name</label>
+                    <input
+                      type="text"
+                      value={campaignName}
+                      onChange={(e) => setCampaignName(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Promotion Goal</label>
+                    <select
+                      value={campaignGoal}
+                      onChange={(e) => setCampaignGoal(e.target.value)}
+                      className="w-full p-2.5 bg-white/5 border border-white/5 rounded-xl text-xs text-white focus:outline-none"
+                    >
+                      <option value="Sponsor Integration">Sponsor Integration Read</option>
+                      <option value="Product Launch">Product Launch Campaign</option>
+                      <option value="Audience Growth Boost">Audience Growth Boost</option>
+                    </select>
+                  </div>
+
+                  <button
+                    onClick={handleBuildCampaign}
+                    disabled={isBuildingCampaign}
+                    className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                  >
+                    {isBuildingCampaign ? "Compiling strategy..." : "Build Campaign"}
+                  </button>
+                </div>
+
+                <div className="md:col-span-2 glass-card p-6 border-white/5 space-y-6">
+                  {campaignOutput ? (
+                    <>
+                      <div className="border-b border-white/5 pb-3">
+                        <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">Active Strategy: {campaignOutput.name}</span>
+                      </div>
+
+                      <div className="space-y-4">
+                        {campaignOutput.steps.map((step: any, i: number) => (
+                          <div key={i} className="p-3 bg-white/5 border border-white/5 rounded-xl text-xs space-y-1.5">
+                            <p className="font-bold text-white text-[11px] uppercase tracking-wider text-purple-300">{step.time}</p>
+                            <p className="text-gray-300 font-mono text-[11px] leading-relaxed">{step.content}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-center h-48 space-y-2">
+                      <Target className="h-8 w-8 text-gray-600" />
+                      <p className="text-xs text-gray-500">Provide campaign details and build coordinate marketing maps.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================== */}
+          {/* TAB: COMMUNITY FEED */}
+          {/* ========================================== */}
+          {activeTab === "Community Feed" && (
+            <div className="p-6 max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Creator Community Feed</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Scan trending scripts, prompts, and outlines shared by other verified creators.</p>
+                </div>
+                <button onClick={() => setActiveTab("Dashboard")} className="text-xs text-purple-400 hover:underline">
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {communityPosts.map(post => (
+                  <div key={post.id} className="glass-card p-5 border-white/5 space-y-4 flex flex-col justify-between relative overflow-hidden">
+                    <div className="absolute top-0 right-0 h-16 w-16 bg-purple-500/5 rounded-full blur-xl pointer-events-none" />
+                    
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                        <div className="flex items-center gap-2.5">
+                          <div className="h-7 w-7 rounded-lg bg-purple-600/25 border border-purple-500/30 flex items-center justify-center text-[10px] text-purple-300 font-bold">
+                            {post.avatar}
+                          </div>
+                          <div>
+                            <span className="text-xs font-bold text-white block">@{post.handle}</span>
+                            <span className="text-[9px] text-gray-500 font-bold block uppercase tracking-wider">{post.badge}</span>
+                          </div>
+                        </div>
+                        <button onClick={() => {
+                          const newFile = { name: `${post.handle}_clone_${Math.floor(Math.random()*100)}.txt`, type: "Script", size: "1.4 KB", date: "Just Now" };
+                          setWorkspaceFiles(prev => [newFile, ...prev]);
+                          showToast("Cloned post outline to workspace File Manager!");
+                        }} className="px-2 py-1 bg-purple-600/15 border border-purple-500/25 text-purple-300 rounded text-[9px] font-bold">
+                          Clone to Workspace
+                        </button>
+                      </div>
+                      <p className="text-xs text-gray-300 leading-relaxed font-mono">"{post.content}"</p>
+                    </div>
+
+                    <div className="flex items-center gap-4 text-xs font-semibold text-gray-500 border-t border-white/5 pt-2.5 mt-2">
+                      <button
+                        onClick={() => {
+                          setCommunityPosts(prev =>
+                            prev.map(p =>
+                              p.id === post.id
+                                ? { ...p, likes: p.liked ? p.likes - 1 : p.likes + 1, liked: !p.liked }
+                                : p
+                            )
+                          );
+                          showToast(post.liked ? "Unliked post" : "Liked post!");
+                        }}
+                        className={`hover:text-purple-400 flex items-center gap-1.5 transition-colors ${post.liked ? "text-purple-400" : ""}`}
+                      >
+                        ♥ {post.likes}
+                      </button>
+                      <span>☍ {post.shares} Clones</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -2127,7 +3389,6 @@ export default function Dashboard() {
                     { id: "ai", label: "AI Preferences", icon: Sparkles },
                     { id: "integrations", label: "Integrations", icon: Share2 },
                     { id: "security", label: "Security", icon: Shield },
-                    { id: "billing", label: "Billing", icon: CreditCard },
                     { id: "workspace", label: "Workspace", icon: FolderOpen },
                     { id: "team", label: "Team", icon: Users },
                     { id: "api", label: "API Keys", icon: Zap },

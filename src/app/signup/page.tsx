@@ -43,7 +43,7 @@ export default function Signup() {
 
     try {
       // Real Firebase signup
-      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-creatoros-ai") {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(userCredential.user, { displayName: name });
         
@@ -87,7 +87,7 @@ export default function Signup() {
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otpCode === "1234" || otpCode.length === 4) {
-      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-creatoros-ai") {
         localStorage.setItem(
           "userSession",
           JSON.stringify({ 
@@ -117,7 +117,7 @@ export default function Signup() {
     setError("");
     setLoading(true);
     try {
-      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-creatoros-ai") {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
 
@@ -159,7 +159,7 @@ export default function Signup() {
     setError("");
     setLoading(true);
     try {
-      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai") {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-creatoros-ai") {
         const result = await signInWithPopup(auth, githubProvider);
         const user = result.user;
 
@@ -214,7 +214,7 @@ export default function Signup() {
               <Sparkles className="h-5 w-5 text-white" />
             </div>
             <span className="text-2xl font-bold tracking-tight text-white">
-              ViralFlow <span className="text-purple-400">AI</span>
+              CreatorOS <span className="text-purple-400">AI</span>
             </span>
           </Link>
         </div>

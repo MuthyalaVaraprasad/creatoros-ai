@@ -31,7 +31,7 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 
   const isFirebaseConfigured = !!(
     process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-viralflow-ai"
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "dummy-api-key-for-creatoros-ai"
   );
 
   const refreshUser = async () => {

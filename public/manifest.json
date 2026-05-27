@@ -1,6 +1,6 @@
 {
-  "name": "ViralFlow AI Creator OS",
-  "short_name": "ViralFlow",
+  "name": "CreatorOS AI Creator OS",
+  "short_name": "CreatorOS",
   "description": "Billion-dollar AI Content Automation & Creator platform.",
   "start_url": "/dashboard",
   "display": "standalone",
