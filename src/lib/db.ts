@@ -1,7 +1,11 @@
 import fs from "fs";
 import path from "path";
 
-const dbPath = path.join(process.cwd(), "src/lib/db.json");
+// Determine writeable path
+const isServerless = !!(process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.VERCEL || process.env.LAMBDA_TASK_ROOT);
+const dbPath = isServerless 
+  ? "/tmp/db.json"
+  : path.join(process.cwd(), "src/lib/db.json");
 
 export interface UserSession {
   email: string;
@@ -62,24 +66,48 @@ const defaultData: DBStructure = {
   }
 };
 
+// In-memory fallback
+let memoryDb: DBStructure = JSON.parse(JSON.stringify(defaultData));
+
 export function readDB(): DBStructure {
   try {
-    if (!fs.existsSync(dbPath)) {
-      fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-      fs.writeFileSync(dbPath, JSON.stringify(defaultData, null, 2), "utf-8");
-      return defaultData;
+    // If local development, check local path
+    if (!isServerless) {
+      if (!fs.existsSync(dbPath)) {
+        fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+        fs.writeFileSync(dbPath, JSON.stringify(defaultData, null, 2), "utf-8");
+        return defaultData;
+      }
+      const data = fs.readFileSync(dbPath, "utf-8");
+      return JSON.parse(data);
     }
-    const data = fs.readFileSync(dbPath, "utf-8");
-    return JSON.parse(data);
+    
+    // Serverless: check if /tmp/db.json exists
+    if (fs.existsSync(dbPath)) {
+      const data = fs.readFileSync(dbPath, "utf-8");
+      return JSON.parse(data);
+    }
+
+    // Try to write default data to /tmp/db.json for persistence in active serverless container
+    try {
+      fs.writeFileSync(dbPath, JSON.stringify(defaultData, null, 2), "utf-8");
+    } catch (writeErr) {
+      console.error("Serverless write default failed, using memory:", writeErr);
+    }
+    return memoryDb;
   } catch (error) {
     console.error("Error reading database:", error);
-    return defaultData;
+    return memoryDb;
   }
 }
 
 export function writeDB(data: DBStructure) {
+  memoryDb = data; // Always update in-memory cache
   try {
-    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    const dir = path.dirname(dbPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), "utf-8");
   } catch (error) {
     console.error("Error writing database:", error);

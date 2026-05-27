@@ -257,21 +257,32 @@ export default function Dashboard() {
       }
     }
 
-    // Load Initial DB records
-    fetch("/api/projects").then(res => res.json()).then(data => {
-      if (data.success) setRecentProjects(data.data);
-    });
-    fetch("/api/calendar").then(res => res.json()).then(data => {
-      if (data.success) setCalendarEvents(data.data);
-    });
-    fetch("/api/brand").then(res => res.json()).then(data => {
-      if (data.success && data.data) {
-        setBrandColorPrimary(data.data.colorPrimary);
-        setBrandColorSecondary(data.data.colorSecondary);
-        setBrandFont(data.data.font);
-        setBrandVoice(data.data.voice);
-      }
-    });
+    // Load Initial DB records with error catches
+    fetch("/api/projects")
+      .then(res => res.ok ? res.json() : { success: false, data: [] })
+      .then(data => {
+        if (data && data.success) setRecentProjects(data.data || []);
+      })
+      .catch(err => console.error("Error fetching projects:", err));
+
+    fetch("/api/calendar")
+      .then(res => res.ok ? res.json() : { success: false, data: [] })
+      .then(data => {
+        if (data && data.success) setCalendarEvents(data.data || []);
+      })
+      .catch(err => console.error("Error fetching calendar:", err));
+
+    fetch("/api/brand")
+      .then(res => res.ok ? res.json() : { success: false, data: null })
+      .then(data => {
+        if (data && data.success && data.data) {
+          setBrandColorPrimary(data.data.colorPrimary);
+          setBrandColorSecondary(data.data.colorSecondary);
+          setBrandFont(data.data.font);
+          setBrandVoice(data.data.voice);
+        }
+      })
+      .catch(err => console.error("Error fetching brand profiles:", err));
 
     // PWA Install Prompt handler
     const handleBeforeInstallPrompt = (e: any) => {
