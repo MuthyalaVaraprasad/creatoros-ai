@@ -1147,12 +1147,21 @@ export default function Dashboard() {
 
               <div className="flex items-center gap-3 pl-3 border-l border-white/5">
                 <div className="text-right">
-                  <p className="text-xs font-bold text-white">Creator Pro</p>
+                  <p className="text-xs font-bold text-white">{user.name || "Creator Pro"}</p>
                   <p className="text-[9px] text-purple-400 font-semibold">{creatorLevel}</p>
                 </div>
-                <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
-                  CP
-                </div>
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name || "User Avatar"}
+                    className="h-8 w-8 rounded-full object-cover border border-purple-500/30"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                    {user.name ? user.name.split(" ").filter(Boolean).map((n: string) => n[0]).join("").toUpperCase().slice(0, 2) : "CP"}
+                  </div>
+                )}
               </div>
             </div>
           </header>
